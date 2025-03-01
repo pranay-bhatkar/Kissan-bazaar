@@ -3,7 +3,7 @@
   "name": "KissanBazar",
   "functions": {
     "api/index.js": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x"
     }
   },
   "routes": [
