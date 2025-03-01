@@ -1,16 +1,15 @@
 {
   "version": 2,
   "name": "KissanBazar",
-  "build": [
-    {
-      "src": "./index.js",
-      "use": "@vercel/node"
+  "functions": {
+    "index.js": {
+      "runtime": "@vercel/node"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/index.js"
     }
   ]
 }
