@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import bannerMobile from "../assets/banner-2.jpg";
-import banner from "../assets/banner.jpg";
+import bannerMobile from "../assets/banner-1.png";
+import banner from "../assets/banner-1.png";
 import CategoryWiseProductDisplay from "../components/CategoryWiseProductDisplay";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonial";
@@ -36,12 +36,12 @@ const Home = () => {
   };
 
   return (
-    <section className="bg-white pb-10">
+    <section className="bg-white">
       <div className="container mx-auto py-3">
-        <div className="w-full h-full min-h-48 bg-blue-100 rounded">
+        <div className="w-full h-full min-h-48 bg-blue-100 rounded-3xl">
           <img
             src={banner}
-            className="w-full h-full hidden lg:block"
+            className="w-full h-full hidden rounded-3xl lg:block "
             alt="banner"
           />
           <img
@@ -52,7 +52,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex justify-center py-6">
+      <div className="flex justify-center pt-6">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {loadingCategory
@@ -90,7 +90,7 @@ const Home = () => {
         <CategoryWiseProductDisplay key={c?._id} id={c?._id} name={c?.name} />
       ))}
 
-      <div className="py-5">
+      <div className="pt-5">
         <Testimonials />
         <WhyShop />
         <Footer />

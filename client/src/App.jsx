@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
-import "./App.css";
 import SummaryApi from "./common/SummaryApi";
 import CartMobileLink from "./components/CartMobile";
 import Header from "./components/Header";
@@ -74,7 +73,7 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" >
       <GlobalProvider>
         <Header />
         <main className="min-h-[78vh]">

@@ -1,68 +1,50 @@
 import { motion } from "framer-motion";
+import testimonial_img1 from "../assets/img1.png";
+import testimonial_img2 from "../assets/img2.png";
+import testimonial_img3 from "../assets/img3.png";
+import testimonial_img4 from "../assets/img4.png";
+import testimonial_img6 from "../assets/img6.png";
+import {} from "../assets/img1.png";
 
 const testimonials = [
   {
-    name: "Amit Sharma",
+    name: "Digvijay Deore",
     location: "Mumbai, India",
-    designation: "Software Engineer",
-    feedback: "Fresh vegetables and dairy products at the best price! Love the service.",
-    image: "https://randomuser.me/api/portraits/men/10.jpg",
+    designation: "Founder & developer",
+    image: testimonial_img4,
   },
   {
-    name: "Priya Verma",
+    name: "Shreya Tiwari",
     location: "Mumbai, India",
-    designation: "Marketing Executive",
-    feedback: "Amazing quality and super fast delivery. Highly recommended!",
-    image: "https://randomuser.me/api/portraits/women/11.jpg",
+    designation: "Co-Founder & Finance",
+    image: testimonial_img2,
   },
   {
-    name: "Rajesh Gupta",
+    name: "Abhinav Pandey",
     location: "Mumbai, India",
-    designation: "Business Owner",
-    feedback: "Best online grocery store I have come across. Very convenient!",
-    image: "https://randomuser.me/api/portraits/men/12.jpg",
+    designation: "Operations Head (Dombivli)",
+    image: testimonial_img3,
   },
   {
-    name: "Sneha Iyer",
+    name: "Lokesh Raut",
     location: "Mumbai, India",
-    designation: "Doctor",
-    feedback: "Great variety of fresh products. Customer support is excellent!",
-    image: "https://randomuser.me/api/portraits/women/13.jpg",
+    designation: "Business Head (Dombivli)",
+    image: testimonial_img1,
   },
   {
-    name: "Vikram Patil",
+    name: "Pranay Bhatkar",
     location: "Mumbai, India",
-    designation: "Entrepreneur",
-    feedback: "Timely delivery and best quality grocery items. Loved the experience!",
-    image: "https://randomuser.me/api/portraits/men/14.jpg",
+    designation: "Thane Executive",
+    image: testimonial_img6,
   },
-  {
-    name: "Anjali Mehta",
-    location: "Mumbai, India",
-    designation: "Teacher",
-    feedback: "The dairy products are incredibly fresh. Will keep ordering!",
-    image: "https://randomuser.me/api/portraits/women/15.jpg",
-  },
-  {
-    name: "Suresh Nair",
-    location: "Mumbai, India",
-    designation: "Bank Manager",
-    feedback: "Affordable prices and top-notch quality. Very satisfied!",
-    image: "https://randomuser.me/api/portraits/men/16.jpg",
-  },
-  {
-    name: "Kavita Reddy",
-    location: "Mumbai, India",
-    designation: "Chef",
-    feedback: "Loved the organic products section. Truly amazing!",
-    image: "https://randomuser.me/api/portraits/women/17.jpg",
-  }
 ];
 
 export default function Testimonials() {
   return (
     <div className="py-12 bg-gray-100 text-center">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">What Our Customers Say</h2>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        What Our Customers Say
+      </h2>
       <div className="flex justify-center gap-6 overflow-hidden flex-wrap bg-red-200 mx-5  rounded-3xl shadow-xl border-2 border-white py-10">
         {testimonials.map((testimonial, index) => (
           <motion.div
@@ -75,11 +57,19 @@ export default function Testimonials() {
             <img
               src={testimonial.image}
               alt={testimonial.name}
-              className="w-16 h-16 rounded-full mx-auto mb-4 border-4 border-gray-300"
+              className="w-20 h-27 aspect-auto rounded-lg mx-auto mb-4 border-4 border-gray-300"
             />
-            <p className="text-gray-600 italic">"{testimonial.feedback}"</p>
-            <h4 className="mt-4 font-semibold text-gray-800">{testimonial.name}</h4>
-            <p className="text-sm text-gray-500">{testimonial.designation}, {testimonial.location}</p>
+
+            <p className="mt-4 font-semibold text-gray-800">
+              {testimonial.name}
+            </p>
+            <p className="text-sm text-gray-700 font-normal pt-5">
+              {testimonial.designation}
+            </p>
+
+            <p className="text-sm text-gray-700 font-normal pt-2">
+              {testimonial.location}
+            </p>
           </motion.div>
         ))}
       </div>

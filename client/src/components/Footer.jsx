@@ -16,8 +16,8 @@ const Footer = () => {
           {/* Logo Section */}
           <div className="flex flex-col items-center md:items-center">
             <p className="text-3xl font-bold tracking-wide">KissanBazar</p>
-            <p className="mt-3 text-white text-md font-light max-w-xs">
-              Your trusted marketplace for fresh and organic farm products.
+            <p className="mt-3 text-white text-lg font-light max-w-xs">
+              India's first - fast fresh fixed free grocery delivery site.
             </p>
           </div>
 
@@ -53,7 +53,7 @@ const Footer = () => {
             <p className="font-bold text-xl">Contact</p>
             <div className="font-normal space-y-2 pt-2">
               <p>9022866505</p>
-              <p>kissanbazar@bazaar.com</p>
+              <p>official@kissanbazzar.in</p>
             </div>
 
             <div className="pt-5">

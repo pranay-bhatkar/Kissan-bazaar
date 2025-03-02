@@ -1,35 +1,37 @@
 import React from "react";
 import { motion } from "framer-motion";
+import fast from "../assets/fast.png";
+import fresh from "../assets/fresh.png";
+import fixed from "../assets/fixed.png";
+import free from "../assets/free.jpg";
 
 const features = [
   {
     id: 1,
-    title: "Highest Assortment",
+    title: "Fast",
     description:
-      "250+ Fresh Fruits and Vegetables along with 100+ traditionally handmade snacks",
-    image: "https://i.pravatar.cc/150?img=12",
+      "You will get the fastest deliveries because there is no middle time.",
+    image: fast,
   },
   {
     id: 2,
-    title: "Naturally Grown",
+    title: "Fresh",
     description:
-      "All our vegetables & fruits are naturally grown in a natural environment.",
-    image: "https://i.pravatar.cc/150?img=12",
+      "Since there is no middle time, it will not be stored anywhere, you will get fresh food in the shortest possible time.",
+    image: fresh,
   },
   {
     id: 3,
-    title: "Clean & Grade",
+    title: "Fixed",
     description:
-      "Post plucking, each produce is cleaned and graded by experts.",
-    image: "https://i.pravatar.cc/150?img=12",
+      "We will enter into contracts with farmers to provide vegetables and fruits at a fixed price throughout the year. No tension while market price fluctuates.",
+    image: fixed,
   },
-  
   {
     id: 4,
-    title: "Clean & Grade",
-    description:
-      "Post plucking, each produce is cleaned and graded by experts.",
-    image: "https://i.pravatar.cc/150?img=12",
+    title: "Free",
+    description: "Free delivery for our regular customers.",
+    image: free,
   },
 ];
 
@@ -40,29 +42,26 @@ const WhyShop = () => {
         Why Shop From <span className="text-green-600">KisanBazar?</span>
       </h2>
 
-      <div className="flex flex-wrap justify-center gap-12 px-6">
+      <div className="flex flex-wrap justify-center gap-8 px-6">
         {features.map((feature) => (
           <motion.div
             key={feature.id}
-            className="flex items-center  rounded-lg p-6 w-[400px] text-left  "
-            whileHover={{ scale: 1.05 }}
+            className="flex items-center rounded-lg p-6 w-full max-w-sm text-left bg-white shadow-lg"
+            whileHover={{ scale: 1.0 }}
           >
-            {/* Water Drop Shape Container */}
-            <div className="relative w-30 h-30 rounded-full overflow-hidden border-2 border-green-500 shadow-md">
-              <div className="absolute inset-0 bg-green-500 rounded-t-full transform rotate-180" />
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className="w-full h-full object-cover relative z-10"
-              />
-            </div>
+            {/* Image Container */}
+            <img
+              src={feature.image}
+              alt={feature.image}
+              className=" rounded-full w-20 border-4 border-green-500 "
+            />
 
             {/* Text Content */}
             <div className="ml-6">
               <h3 className="text-lg font-bold text-green-600">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 text-sm mt-2">
+              <p className="text-gray-600 text-sm font-normal text-justify mt-2 break-words">
                 {feature.description}
               </p>
             </div>
