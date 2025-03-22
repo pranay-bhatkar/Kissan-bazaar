@@ -206,3 +206,26 @@ export async function getOrderDetailsController(request,response){
         })
     }
 }
+
+
+// Get Order History for a User
+export const getOrderHistory = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Find orders for the given user, populate product & address details
+    const orders = await OrderModel.find({ userId })
+      .populate("items.productId") // Populate product details
+      .populate("delivery_address") // Populate delivery address
+      .sort({ createdAt: -1 }); // Sort by latest order first
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching order history:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};

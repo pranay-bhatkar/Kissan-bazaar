@@ -23,6 +23,7 @@ import CartMobile from "../pages/CartMobile";
 import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
+import OrderHistory from "../pages/OrderHistory";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
                     {
                         path : "myorders",
                         element : <MyOrders/>
+                    },
+                    {
+                        path : "order-history",
+                        element : <OrderHistory/>
                     },
                     {
                         path : "address",

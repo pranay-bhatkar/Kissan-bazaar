@@ -15,9 +15,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl">
           {/* Logo Section */}
           <div className="flex flex-col items-center md:items-center">
-            <p className="text-3xl font-bold tracking-wide">KissanBazar</p>
+            <p className="text-3xl font-bold tracking-wide">KissanBazzar</p>
             <p className="mt-3 text-white text-lg font-light max-w-xs">
-              India's first - fast fresh fixed free grocery delivery site.
+              India's first - fast fresh fixed free grocery delivery site.
             </p>
           </div>
 
@@ -85,7 +85,7 @@ const Footer = () => {
               )}
             </div>
             <p className="text-sm">
-              © {new Date().getFullYear()} KisanBazar. All rights reserved.
+              © {new Date().getFullYear()} KisaanBazzar. All rights reserved.
             </p>
           </div>
         </div>

@@ -43,7 +43,7 @@ export default function Testimonials() {
   return (
     <div className="py-12 bg-gray-100 text-center">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
-        What Our Customers Say
+        Our Team
       </h2>
       <div className="flex justify-center gap-6 overflow-hidden flex-wrap bg-red-200 mx-5  rounded-3xl shadow-xl border-2 border-white py-10">
         {testimonials.map((testimonial, index) => (
