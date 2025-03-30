@@ -19,12 +19,29 @@ import orderRouter from "./route/order.route.js";
 
 const app = express();
 
+// const allowedOrigins = process.env.FRONTEND_URL.split(",");
+
 app.use(
   cors({
     credentials: true,
     origin: process.env.FRONTEND_URL,
   })
 );
+
+
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//   })
+// );
+
 
 app.use(express.json());
 app.use(cookieParser());
