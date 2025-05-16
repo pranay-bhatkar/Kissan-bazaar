@@ -11,6 +11,7 @@ import UserMenu from "./UserMenu";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import DisplayCartItem from "./DisplayCartItem";
+import logo from "../assets/logo.png";
 
 const Header = () => {
   const [isMobile] = useMobile();
@@ -63,28 +64,28 @@ const Header = () => {
           {/**logo */}
           <div className="h-full">
             <Link to={"/"} className="h-full flex justify-center items-center">
-              {/* <img 
-                                            src={logo}
-                                            width={170}
-                                            height={60}
-                                            alt='logo'
-                                            className='hidden lg:block'
-                                        />
-                                        <img 
-                                            src={logo}
-                                            width={120}
-                                            height={60}
-                                            alt='logo'
-                                            className='lg:hidden'
-                                        /> */}
-              <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-900">
-                KisanBazar
-              </h1>
+              <img
+                src={logo}
+                width={170}
+                height={60}
+                alt="logo"
+                className="hidden lg:block"
+              />
+              <img
+                src={logo}
+                width={120}
+                height={60}
+                alt="logo"
+                className="lg:hidden"
+              />
+              {/* <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-900">
+                KissanBazzar
+              </h1> */}
             </Link>
           </div>
 
           {/**Search */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block" >
             <Search />
           </div>
 

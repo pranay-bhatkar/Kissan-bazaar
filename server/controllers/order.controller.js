@@ -13,13 +13,14 @@ import mongoose from "mongoose";
             return({
                 userId : userId,
                 orderId : `ORD-${new mongoose.Types.ObjectId()}`,
+                
                 productId : el.productId._id, 
                 product_details : {
                     name : el.productId.name,
                     image : el.productId.image
                 } ,
                 paymentId : "",
-                payment_status : "CASH ON DELIVERY",
+                payment_status : "Cash on Delivery",
                 delivery_address : addressId ,
                 subTotalAmt  : subTotalAmt,
                 totalAmt  :  totalAmt,

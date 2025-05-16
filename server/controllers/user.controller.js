@@ -47,7 +47,7 @@ export async function registerUserController(request,response){
 
         const verifyEmail = await sendEmail({
             sendTo : email,
-            subject : "Verify email from binkeyit",
+            subject : "Verify email from kissanbazzar",
             html : verifyEmailTemplate({
                 name,
                 url : VerifyEmailUrl
@@ -472,7 +472,7 @@ export async function refreshToken(request,response){
 
         if(!refreshToken){
             return response.status(401).json({
-                message : "Invalid token",
+                message : "Please login first",
                 error  : true,
                 success : false
             })

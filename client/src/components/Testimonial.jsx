@@ -1,78 +1,71 @@
-import { motion } from "framer-motion";
-import testimonial_img1 from "../assets/img1.png";
-import testimonial_img2 from "../assets/img2.png";
-import testimonial_img3 from "../assets/img3.png";
-import testimonial_img4 from "../assets/img4.png";
-import testimonial_img6 from "../assets/img6.png";
-import {} from "../assets/img1.png";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
-const testimonials = [
+const customerReviews = [
   {
-    name: "Digvijay Deore",
-    location: "Mumbai, India",
-    designation: "Founder & developer",
-    image: testimonial_img4,
+    name: "Rohit Ray",
+    location: "Dombivali",
+    image: "",
+    review:
+      "I just used KisanBazzar. I really liked their plan — 1kg vegetable free on every 5kg.",
   },
   {
-    name: "Shreya Tiwari",
-    location: "Mumbai, India",
-    designation: "Co-Founder & Finance",
-    image: testimonial_img2,
+    name: "Shivani Manhas",
+    location: "Mumbai",
+    image: "",
+    review:
+      "I recently ordered vegetables from KisanBazzar at night, and I received a fresh delivery in the morning — with free delivery.",
   },
   {
-    name: "Abhinav Pandey",
-    location: "Mumbai, India",
-    designation: "Operations Head (Dombivli)",
-    image: testimonial_img3,
-  },
-  {
-    name: "Lokesh Raut",
-    location: "Mumbai, India",
-    designation: "Business Head (Dombivli)",
-    image: testimonial_img1,
-  },
-  {
-    name: "Pranay Bhatkar",
-    location: "Mumbai, India",
-    designation: "Thane Executive",
-    image: testimonial_img6,
+    name: "Rupesh Singh",
+    location: "Mumbai",
+    image: "",
+    review:
+      " I ordered vegetables through KisanBazzar's Daily Fresh From Farmers service, and I received a fresh, fast, and free delivery in the morning.",
   },
 ];
 
-export default function Testimonials() {
+const CustomerReviewCarousel = () => {
   return (
-    <div className="py-12 bg-gray-100 text-center">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">
-        Our Team
+    <div className="bg-white py-10 px-4 md:px-8">
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+        What Our Customers Say
       </h2>
-      <div className="flex justify-center gap-6 overflow-hidden flex-wrap bg-red-200 mx-5  rounded-3xl shadow-xl border-2 border-white py-10">
-        {testimonials.map((testimonial, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            className="bg-white p-6 rounded-2xl shadow-lg w-80"
-          >
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="w-20 h-27 aspect-auto rounded-lg mx-auto mb-4 border-4 border-gray-300"
-            />
-
-            <p className="mt-4 font-semibold text-gray-800">
-              {testimonial.name}
-            </p>
-            <p className="text-sm text-gray-700 font-normal pt-5">
-              {testimonial.designation}
-            </p>
-
-            <p className="text-sm text-gray-700 font-normal pt-2">
-              {testimonial.location}
-            </p>
-          </motion.div>
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        spaceBetween={20}
+        slidesPerView={1}
+        navigation
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        loop={true}
+      >
+        {customerReviews.map((customer, index) => (
+          <SwiperSlide key={index}>
+            <div className="flex flex-col justify-between items-center text-center my-2 border-2 px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-10 rounded-2xl shadow-md w-full max-w-md mx-auto min-h-[360px]">
+              <img
+                src={customer.image}
+                alt={customer.name}
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full object-cover mb-4 border-4 border-blue-200"
+              />
+              <p className="text-sm sm:text-base md:text-lg text-black font-bold italic mb-4 max-w-[90%]">
+                {customer.review}
+              </p>
+              <div>
+                <h4 className="text-base sm:text-lg md:text-xl font-semibold text-blue-900">
+                  {customer.name}
+                </h4>
+                <span className="text-xs sm:text-sm md:text-base text-gray-600">
+                  {customer.location}
+                </span>
+              </div>
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
-}
+};
+
+export default CustomerReviewCarousel;

@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import fast from "../assets/fast.png";
 import fresh from "../assets/fresh.png";
@@ -36,32 +36,58 @@ const features = [
 ];
 
 const WhyShop = () => {
+  const scrollRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-scroll logic
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const interval = setInterval(() => {
+      if (isHovered) return;
+      container.scrollBy({ left: 300, behavior: "smooth" });
+
+      // Reset to start if near end
+      if (
+        container.scrollLeft + container.offsetWidth >=
+        container.scrollWidth - 10
+      ) {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      }
+    }, 1000); // every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
   return (
-    <div className="py-16 bg-gray-100 text-center">
+    <div className="py-12 rounded-xl text-center mb-10">
       <h2 className="text-3xl font-bold text-gray-800 mb-10">
         Why Shop From <span className="text-green-600">KisanBazar?</span>
       </h2>
 
-      <div className="flex flex-wrap justify-center gap-8 px-6">
+      <div
+        ref={scrollRef}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="flex md:flex-wrap overflow-x-auto md:overflow-visible gap-6 px-6 md:justify-center scrollbar-hide scroll-snap-x"
+      >
         {features.map((feature) => (
           <motion.div
             key={feature.id}
-            className="flex items-center rounded-lg p-6 w-full max-w-sm text-left bg-white shadow-lg"
-            whileHover={{ scale: 1.0 }}
+            className="flex min-w-[350px] md:min-w-0 snap-start items-center bg-white border-2 shadow-lg rounded-lg p-5 text-left md:w-full md:max-w-sm"
+            whileHover={{ scale: 1.05 }}
           >
-            {/* Image Container */}
             <img
               src={feature.image}
-              alt={feature.image}
-              className=" rounded-full w-20 border-4 border-green-500 "
+              alt={feature.title}
+              className="w-20 h-20 object-cover rounded-full border-4 border-green-500"
             />
-
-            {/* Text Content */}
-            <div className="ml-6">
+            <div className="ml-4">
               <h3 className="text-lg font-bold text-green-600">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 text-sm font-normal text-justify mt-2 break-words">
+              <p className="font-medium text-gray-600 text-sm mt-2 text-justify">
                 {feature.description}
               </p>
             </div>

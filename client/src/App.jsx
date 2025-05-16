@@ -73,10 +73,10 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" >
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <GlobalProvider>
         <Header />
-        <main className="min-h-[78vh]">
+        <main className="min-h-auto">
           <Outlet />
         </main>
         <Toaster />
