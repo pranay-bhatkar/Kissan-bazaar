@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import bannerMobile from "../assets/banner-1.png";
+import { Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import banner from "../assets/banner-1.png";
+import bannerMobile from "../assets/banner-1.png"; // same file, but could be optimized for mobile
+import About from "../components/About";
 import CategoryWiseProductDisplay from "../components/CategoryWiseProductDisplay";
+import DirectBuyFromFarmers from "../components/DirectBuyFromFarmers";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonial";
 import WhyShop from "../components/Whyshop";
 import { valideURLConvert } from "../utils/valideURLConvert";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import DirectBuyFromFarmers from "../components/DirectBuyFromFarmers";
-import About from "../components/About";
 
 const Home = () => {
   const loadingCategory = useSelector((state) => state.product.loadingCategory);
@@ -25,14 +25,9 @@ const Home = () => {
 
   const handleRedirectProductListpage = (id, cat) => {
     const subcategory = subCategoryData.find((sub) =>
-      sub.category.some((c) => c._id == id)
+      sub.category.some((c) => c._id === id)
     );
-
-    if (!subcategory) {
-      console.error("Subcategory not found");
-      return;
-    }
-
+    if (!subcategory) return console.error("Subcategory not found");
     const url = `/${valideURLConvert(cat)}-${id}/${valideURLConvert(
       subcategory.name
     )}-${subcategory._id}`;
@@ -52,64 +47,67 @@ const Home = () => {
     },
   ];
 
-  
   return (
-    <section className="bg-white ">
-      {/* Banner */}
-      <div className="container  mx-auto px-4 py-3">
-      <Swiper
-        modules={[Pagination, Autoplay]}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        loop={true}
-        className="rounded-2xl  overflow-hidden "
-      >
-        {banners.map((banner, index) => (
-          <SwiperSlide key={index}>
-            <div className="w-full h-auto min-h-[100px] sm:min-h-[200px] lg:min-h-[250px] overflow-hidden rounded-2xl">
-              <img
-                src={banner.desktop}
-                alt={banner.alt}
-                className="w-full h-auto  hidden lg:block object-cover"
-              />
-              <img
-                src={banner.mobile}
-                alt={banner.alt}
-                className="w-full h-auto lg:hidden object-cover"
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    <section className="bg-white pt-5">
+      {/* Banner Section */}
+   <div className="container mx-auto px-4 py-3">
+  <Swiper
+    modules={[Pagination, Autoplay]}
+    pagination={{ clickable: true }}
+    autoplay={{ delay: 3000, disableOnInteraction: false }}
+    loop
+    className="rounded-2xl overflow-hidden"
+  >
+    {banners.map((banner, index) => (
+      <SwiperSlide key={index}>
+        <div className="w-full aspect-[3/1] sm:aspect-[4/1] lg:aspect-[8/2] overflow-hidden rounded-2xl border-4 border-green-600">
+          <img
+            src={banner.desktop}
+            alt={banner.alt}
+            className="hidden lg:block w-full h-full object-cover rounded-2xl"
+          />
+          <img
+            src={banner.mobile}
+            alt={banner.alt}
+            className="lg:hidden w-full h-full object-cover rounded-2xl"
+          />
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
 
-      {/* Category Cards */}
+
+      {/* Category Cards Section */}
       <div className="flex justify-center pt-6">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6">
             {loadingCategory
               ? new Array(12).fill(null).map((_, index) => (
-                  <div key={index} className="animate-pulse w-full">
-                    <div className="bg-blue-100 w-full h-[180px] sm:h-[220px] md:h-[250px] rounded-lg border border-gray-300"></div>
-                    <div className="bg-blue-100 w-36 h-6 mt-2 rounded"></div>
+                  <div
+                    key={index}
+                    className="animate-pulse flex flex-col items-center"
+                  >
+                    <div className="bg-blue-100 w-full aspect-square rounded-xl border border-gray-300"></div>
+                    <div className="bg-blue-100 w-24 h-4 mt-2 rounded"></div>
                   </div>
                 ))
               : categoryData.map((cat) => (
                   <div
                     key={cat._id}
-                    className="cursor-pointer transition-transform transform hover:scale-105 drop-shadow-lg"
+                    className="cursor-pointer transition-transform hover:scale-105 flex flex-col items-center"
                     onClick={() =>
                       handleRedirectProductListpage(cat._id, cat.name)
                     }
                   >
-                    <div className="w-full h-[180px] sm:h-[220px] md:h-[250px] border-4 border-green-400 rounded-lg overflow-hidden">
+                    <div className="w-full max-w-[150px] sm:max-w-[160px] md:max-w-[180px] aspect-square bg-white rounded-xl shadow-md overflow-hidden p-2 border-2 border-green-400">
                       <img
                         src={cat.image}
-                        className="w-full h-full object-cover rounded-lg"
                         alt={cat.name}
+                        className="w-full h-full object-contain"
                       />
                     </div>
-                    <p className="text-center text-base sm:text-lg md:text-xl font-semibold mt-2 text-gray-900">
+                    <p className="text-center text-sm sm:text-base font-semibold mt-2 text-gray-900 leading-tight line-clamp-2 max-w-[90%]">
                       {cat.name}
                     </p>
                   </div>
@@ -118,14 +116,14 @@ const Home = () => {
         </div>
       </div>
 
-      {/* CategoryWiseProductDisplay */}
+      {/* Dynamic Category-wise Product Display */}
       {categoryData?.map((c) => (
-        <CategoryWiseProductDisplay key={c?._id} id={c?._id} name={c?.name} />
+        <CategoryWiseProductDisplay key={c._id} id={c._id} name={c.name} />
       ))}
 
       {/* Footer Section */}
       <div className="pt-5 px-4 sm:px-6 md:px-8">
-        <DirectBuyFromFarmers/>
+        <DirectBuyFromFarmers />
         <Testimonials />
         <WhyShop />
         <About />

@@ -1,31 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/Home";
-import SearchPage from "../pages/SearchPage";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import ForgotPassword from "../pages/ForgotPassword";
-import OtpVerification from "../pages/OtpVerification";
-import ResetPassword from "../pages/ResetPassword";
-import UserMenuMobile from "../pages/UserMenuMobile";
-import Dashboard from "../layouts/Dashboard";
-import Profile from "../pages/Profile";
-import MyOrders from "../pages/MyOrders";
-import Address from "../pages/Address";
-import CategoryPage from "../pages/CategoryPage";
-import SubCategoryPage from "../pages/SubCategoryPage";
-import UploadProduct from "../pages/UploadProduct";
-import ProductAdmin from "../pages/ProductAdmin";
-import AdminPermision from "../layouts/AdminPermision";
-import ProductListPage from "../pages/ProductListPage";
-import ProductDisplayPage from "../pages/ProductDisplayPage";
-import CartMobile from "../pages/CartMobile";
-import CheckoutPage from "../pages/CheckoutPage";
-import Success from "../pages/Success";
-import Cancel from "../pages/Cancel";
-import OrderHistory from "../pages/OrderHistory";
 import DirectBuyFromFarmers from "../components/DirectBuyFromFarmers";
+import SubscriptionPage from "../components/SubscriptionPage";
+import AdminPermision from "../layouts/AdminPermision";
+import Dashboard from "../layouts/Dashboard";
+import Address from "../pages/Address";
+import Cancel from "../pages/Cancel";
+import CartMobile from "../pages/CartMobile";
+import CategoryPage from "../pages/CategoryPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import ForgotPassword from "../pages/ForgotPassword";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
+import MyOrders from "../pages/MyOrders";
 import NotFound from "../pages/NotFound";
+import OtpVerification from "../pages/OtpVerification";
+import ProductAdmin from "../pages/ProductAdmin";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
+import ProductListPage from "../pages/ProductListPage";
+import Profile from "../pages/Profile";
+import Register from "../pages/Register";
+import ResetPassword from "../pages/ResetPassword";
+import SearchPage from "../pages/SearchPage";
+import SubCategoryPage from "../pages/SubCategoryPage";
+import Success from "../pages/Success";
+import UploadProduct from "../pages/UploadProduct";
+import UserMenuMobile from "../pages/UserMenuMobile";
+import AdminUserTable from "../pages/AdminUserTable";
+import AdminOrderTable from "../pages/AdminOrderTable";
 
 const router = createBrowserRouter([
   {
@@ -74,13 +76,19 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
+            path: "admin-users",
+            element: <AdminUserTable />,
+          },
+          {
+            path: "admin-orders",
+            element: <AdminOrderTable />,
+          },
+
+          {
             path: "myorders",
             element: <MyOrders />,
           },
-          {
-            path: "order-history",
-            element: <OrderHistory />,
-          },
+
           {
             path: "address",
             element: <Address />,
@@ -151,6 +159,10 @@ const router = createBrowserRouter([
       {
         path: "farmer/:id",
         element: <DirectBuyFromFarmers />,
+      },
+      {
+        path: "/subscription",
+        element: <SubscriptionPage />,
       },
 
       {

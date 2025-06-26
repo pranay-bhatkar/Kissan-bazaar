@@ -13,6 +13,7 @@ const initialValue = {
     shopping_cart : [],
     orderHistory : [],
     role : "",
+    referralCode: '',
 }
 
 const userSlice  = createSlice({
@@ -32,6 +33,7 @@ const userSlice  = createSlice({
             state.shopping_cart = action.payload?.shopping_cart
             state.orderHistory = action.payload?.orderHistory
             state.role = action.payload?.role
+            state.referralCode = action.payload?.referralCode
         },
         updatedAvatar : (state,action)=>{
             state.avatar = action.payload

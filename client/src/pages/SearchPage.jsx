@@ -85,7 +85,7 @@ const SearchPage = () => {
         <p className="font-semibold">Search Results: {data.length}</p>
 
         <InfiniteScroll dataLength={data.length} hasMore={page < totalPage} next={handleFetchMore}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-4 gap-5 ">
             {data.map((p, index) => (
               <CardProduct data={p} key={p?._id + "searchProduct" + index} />
             ))}

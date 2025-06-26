@@ -86,7 +86,7 @@ const CategoryPage = () => {
             {
                 categoryData.map((category,index)=>{
                     return(
-                        <div className='w-32 h-56 rounded shadow-md' key={category._id}>
+                        <div className='rounded shadow-md' key={category._id}>
                             <img 
                                 alt={category.name}
                                 src={category.image}

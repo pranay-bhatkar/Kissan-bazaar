@@ -58,9 +58,9 @@ const Header = () => {
   // },[cartItem])
 
   return (
-    <header className="h-24 lg:h-20 lg:shadow-md sticky top-0 z-40 flex flex-col justify-center gap-1 bg-white">
+    <header className="h-20 lg:h-20 lg:shadow-md shadow-md sticky top-0 z-40 flex flex-col justify-center gap-2 bg-white ">
       {!(isSearchPage && isMobile) && (
-        <div className="container mx-auto flex items-center px-2 justify-between">
+        <div className="container mx-auto flex items-center gap-5 px-2 justify-between">
           {/**logo */}
           <div className="h-full">
             <Link to={"/"} className="h-full flex justify-center items-center">
@@ -78,14 +78,11 @@ const Header = () => {
                 alt="logo"
                 className="lg:hidden"
               />
-              {/* <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-900">
-                KissanBazzar
-              </h1> */}
             </Link>
           </div>
 
           {/**Search */}
-          <div className="hidden lg:block" >
+          <div className="w-full max-w-md ">
             <Search />
           </div>
 
@@ -153,10 +150,6 @@ const Header = () => {
           </div>
         </div>
       )}
-
-      <div className="container mx-auto px-2 lg:hidden ">
-        <Search />
-      </div>
 
       {openCartSection && (
         <DisplayCartItem close={() => setOpenCartSection(false)} />

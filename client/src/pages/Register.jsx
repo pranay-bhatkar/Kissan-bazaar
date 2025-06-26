@@ -4,14 +4,17 @@ import toast from "react-hot-toast";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import AxiosToastError from "../utils/AxiosToastError";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 const Register = () => {
+  const [searchParams] = useSearchParams();
+  const referralCode = searchParams.get("ref"); // e.g., ?ref=PRANAY123
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    referredBy: referralCode || "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -72,15 +75,59 @@ const Register = () => {
         <p className="text-lg font-semibold">Welcome to Grocery Store</p>
 
         <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
-          <InputField label="Name" name="name" type="text" value={data.name} onChange={handleChange} />
-          <InputField label="Email" name="email" type="email" value={data.email} onChange={handleChange} />
-          <PasswordField label="Password" name="password" value={data.password} onChange={handleChange} show={showPassword} toggleShow={() => setShowPassword(!showPassword)} />
-          <PasswordField label="Confirm Password" name="confirmPassword" value={data.confirmPassword} onChange={handleChange} show={showConfirmPassword} toggleShow={() => setShowConfirmPassword(!showConfirmPassword)} />
+          <InputField
+            label="Name"
+            name="name"
+            type="text"
+            value={data.name}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Email"
+            name="email"
+            type="email"
+            value={data.email}
+            onChange={handleChange}
+          />
+          <PasswordField
+            label="Password"
+            name="password"
+            value={data.password}
+            onChange={handleChange}
+            show={showPassword}
+            toggleShow={() => setShowPassword(!showPassword)}
+          />
+          <PasswordField
+            label="Confirm Password"
+            name="confirmPassword"
+            value={data.confirmPassword}
+            onChange={handleChange}
+            show={showConfirmPassword}
+            toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
+
+          {/* Optionally display it if you want users to see what ref they came from */}
+          {data.referredBy && (
+            <p className="text-sm text-green-700 font-medium">
+              Referred by:{" "}
+              <span className="font-semibold">{data.referredBy}</span>
+            </p>
+          )}
+
+          <InputField
+            label="Referral Code (Optional)"
+            name="referredBy"
+            type="text"
+            value={data.referredBy}
+            onChange={handleChange}
+          />
 
           <button
             disabled={!isValidValue}
             className={`${
-              isValidValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500 cursor-not-allowed"
+              isValidValue
+                ? "bg-green-800 hover:bg-green-700"
+                : "bg-gray-500 cursor-not-allowed"
             } text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Register
@@ -89,7 +136,10 @@ const Register = () => {
 
         <p className="text-sm mt-3">
           Already have an account?{" "}
-          <Link to="/login" className="font-semibold text-green-700 hover:text-green-800">
+          <Link
+            to="/login"
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             Login
           </Link>
         </p>
