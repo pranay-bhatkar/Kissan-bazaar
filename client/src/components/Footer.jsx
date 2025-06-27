@@ -3,6 +3,9 @@ import {
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
+  FaMicrophone,
+  FaWhatsapp,
+  FaPhone,
 } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
@@ -23,11 +26,58 @@ const Footer = () => {
           {/* Links Section */}
 
           {/* Contact Section */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <p className="font-bold text-xl">Contact</p>
-            <div className="font-normal space-y-2 pt-2">
-              <p>9022866505</p>
-              <p>official@kissanbazzar.in</p>
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2 mt-4 md:mt-0">
+            <p className="font-bold text-xl mb-2 text-white">Contact</p>
+
+            {/* Regular Phone */}
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-white p-2 rounded-full">
+                <FaPhone className="text-green-500" />
+              </div>
+              <a href="tel:+919987882293" className="hover:underline">
+                +91 99878 82293
+              </a>
+            </div>
+
+            {/* WhatsApp */}
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-white p-2 rounded-full">
+                <FaWhatsapp className="text-green-500" />
+              </div>
+              <a
+                href="https://wa.me/919326140459"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                +91 93261 40459
+              </a>
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-white p-2 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-green-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 12l-4-4m0 0l-4 4m4-4v8"
+                  />
+                </svg>
+              </div>
+              <a
+                href="mailto:official@kissanbazzar.in"
+                className="hover:underline break-words"
+              >
+                official@kissanbazzar.in
+              </a>
             </div>
           </div>
 
@@ -43,7 +93,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-500 mt-6 pt-4 w-full max-w-5xl">
-          <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+          <div className="flex flex-col sm:flex-row items-center justify-around space-y-4 sm:space-y-0">
             {/* Social Media Section */}
             <div className="flex gap-4">
               {[

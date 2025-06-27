@@ -92,7 +92,7 @@ const CheckoutPage = () => {
   const handleSubmitTransactionId = async (txnId) => {
     try {
       const response = await Axios({
-        ...SummaryApi.CashOnDeliveryOrder, // You can rename this to reflect QR payments
+        ...SummaryApi.CashOnDeliveryOrder,
         data: {
           list_items: cartItemsList,
           addressId: selectAddress,
@@ -205,7 +205,7 @@ const CheckoutPage = () => {
           You selected the <strong>{deliverySlot}</strong> slot — items will be
           delivered by{" "}
           <strong>
-            {deliverySlot === "morning" ? "evening" : "next morning"}
+            {deliverySlot === "morning" ? "order will be deliverd in next 1 hour" : "next morning"}
           </strong>
           .
         </p>

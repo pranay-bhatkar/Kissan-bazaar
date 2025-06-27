@@ -187,7 +187,7 @@ const DisplayCartItem = ({ close }) => {
                 }`}
                 onClick={() => setSelectedSlot("morning")}
               >
-                Morning (9:00 AM - 12:00 PM) (Delivery by Evening)
+                Morning (9:00 AM - 12:00 PM) (deliverd in next one hour)
               </button>
 
               <button
