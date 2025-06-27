@@ -63,7 +63,7 @@ const WhyShop = () => {
   return (
     <div className="py-12 rounded-xl text-center mb-10">
       <h2 className="text-3xl font-bold text-gray-800 mb-10">
-        Why Shop From <span className="text-green-600">KisanBazar?</span>
+        Why Shop From <span className="text-green-600">KissanBazar?</span>
       </h2>
 
       <div

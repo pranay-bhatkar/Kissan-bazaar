@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import { FaRegEyeSlash } from "react-icons/fa6";
-import { FaRegEye } from "react-icons/fa6";
+import { useState } from 'react';
 import toast from 'react-hot-toast';
-import Axios from '../utils/Axios';
-import SummaryApi from '../common/SummaryApi';
-import AxiosToastError from '../utils/AxiosToastError';
-import { Link, useNavigate } from 'react-router-dom';
-import fetchUserDetails from '../utils/fetchUserDetails';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import SummaryApi from '../common/SummaryApi';
 import { setUserDetails } from '../store/userSlice';
+import Axios from '../utils/Axios';
+import AxiosToastError from '../utils/AxiosToastError';
+import fetchUserDetails from '../utils/fetchUserDetails';
 
 const Login = () => {
     const [data, setData] = useState({

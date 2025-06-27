@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaCaretRight } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import imageEmpty from "../assets/empty_cart.webp";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
-import { FaCaretRight } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import AddToCartButton from "./AddToCartButton";
 import { pricewithDiscount } from "../utils/PriceWithDiscount";
-import imageEmpty from "../assets/empty_cart.webp";
-import toast from "react-hot-toast";
+import AddToCartButton from "./AddToCartButton";
+import BillDetails from "./BillDetails";
 
 const DisplayCartItem = ({ close }) => {
   const { notDiscountTotalPrice, totalPrice, totalQty } = useGlobalContext();
@@ -18,9 +19,12 @@ const DisplayCartItem = ({ close }) => {
 
   const [showDeliveryOptions, setShowDeliveryOptions] = useState(false);
   const [selectedDelivery, setSelectedDelivery] = useState("");
-
   const [scheduledSlotModal, setScheduledSlotModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
+
+  const handlingCharge = 10;
+  const deliveryCharge = 0;
+  const grandTotal = totalPrice + handlingCharge + deliveryCharge;
 
   const redirectToCheckoutPage = () => {
     if (user?._id) {
@@ -33,8 +37,6 @@ const DisplayCartItem = ({ close }) => {
   const handleDeliverySelection = (option) => {
     setSelectedDelivery(option);
     setShowDeliveryOptions(false);
-
-    // Optionally, pass the selection to checkout
     navigate("/checkout", {
       state: { deliveryType: option },
     });
@@ -43,6 +45,7 @@ const DisplayCartItem = ({ close }) => {
   return (
     <section className="bg-neutral-900 fixed top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50">
       <div className="bg-white w-full max-w-sm min-h-screen max-h-screen ml-auto relative">
+        {/* Header */}
         <div className="flex items-center justify-between p-4 shadow-md gap-3">
           <h2 className="font-semibold">Cart</h2>
           <Link to={"/"} className="lg:hidden">
@@ -53,9 +56,11 @@ const DisplayCartItem = ({ close }) => {
           </button>
         </div>
 
+        {/* Cart Content */}
         <div className="min-h-[75vh] lg:min-h-[80vh] h-full max-h-[calc(100vh-150px)] bg-blue-50 p-2 flex flex-col gap-4">
           {cartItem.length > 0 ? (
             <>
+              {/* Savings Info */}
               <div className="flex items-center justify-between px-4 py-2 bg-blue-100 text-blue-500 rounded-full">
                 <p>Your total savings</p>
                 <p>
@@ -63,6 +68,7 @@ const DisplayCartItem = ({ close }) => {
                 </p>
               </div>
 
+              {/* Cart Items */}
               <div className="bg-white rounded-lg p-4 grid gap-5 overflow-auto">
                 {cartItem.map((item) => (
                   <div key={item?._id} className="flex w-full gap-4">
@@ -96,34 +102,18 @@ const DisplayCartItem = ({ close }) => {
                 ))}
               </div>
 
-              <div className="bg-white p-4 rounded-lg">
-                <h3 className="font-semibold mb-2">Bill details</h3>
-                <div className="flex justify-between">
-                  <p>Items total</p>
-                  <p className="flex items-center gap-2">
-                    <span className="line-through text-neutral-400">
-                      {DisplayPriceInRupees(notDiscountTotalPrice)}
-                    </span>
-                    <span>{DisplayPriceInRupees(totalPrice)}</span>
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p>Quantity total</p>
-                  <p>
-                    {totalQty} item{totalQty > 1 ? "s" : ""}
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p>Delivery Charge</p>
-                  <p>Free</p>
-                </div>
-                <div className="font-semibold flex justify-between">
-                  <p>Grand total</p>
-                  <p>{DisplayPriceInRupees(totalPrice)}</p>
-                </div>
-              </div>
+              {/* Bill Details */}
+
+              <BillDetails
+                notDiscountTotalPrice={notDiscountTotalPrice}
+                totalPrice={totalPrice}
+                totalQty={totalQty}
+                handlingCharge={handlingCharge}
+                deliveryCharge={deliveryCharge}
+              />
             </>
           ) : (
+            // Empty Cart UI
             <div className="bg-white flex flex-col justify-center items-center p-4 rounded-lg">
               <img
                 src={imageEmpty}
@@ -141,10 +131,11 @@ const DisplayCartItem = ({ close }) => {
           )}
         </div>
 
+        {/* Proceed Button */}
         {cartItem.length > 0 && (
           <div className="p-2">
             <div className="bg-green-700 text-neutral-100 px-4 py-4 font-bold text-base rounded flex items-center justify-between">
-              <div>{DisplayPriceInRupees(totalPrice)}</div>
+              <div>{DisplayPriceInRupees(grandTotal)}</div>
               <button
                 onClick={redirectToCheckoutPage}
                 className="flex items-center gap-1"
@@ -155,6 +146,7 @@ const DisplayCartItem = ({ close }) => {
           </div>
         )}
 
+        {/* Delivery Option Modal */}
         {showDeliveryOptions && (
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded shadow-lg w-80 animate-fade-in">
@@ -181,6 +173,7 @@ const DisplayCartItem = ({ close }) => {
           </div>
         )}
 
+        {/* Scheduled Slot Modal */}
         {scheduledSlotModal && (
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-lg w-80 animate-fade-in">
@@ -194,7 +187,7 @@ const DisplayCartItem = ({ close }) => {
                 }`}
                 onClick={() => setSelectedSlot("morning")}
               >
-                Morning Slot (Delivery by Evening)
+                Morning (9:00 AM - 12:00 PM) (Delivery by Evening)
               </button>
 
               <button
@@ -205,7 +198,7 @@ const DisplayCartItem = ({ close }) => {
                 }`}
                 onClick={() => setSelectedSlot("evening")}
               >
-                Evening Slot (Delivery by Morning)
+                Evening (7:00 PM - 12:00 AM) (Delivery by Morning)
               </button>
 
               <div className="flex justify-between gap-2 mt-4">
@@ -221,8 +214,6 @@ const DisplayCartItem = ({ close }) => {
                   onClick={() => {
                     setScheduledSlotModal(false);
                     setShowDeliveryOptions(false);
-
-                    // Navigate with delivery data
                     navigate("/checkout", {
                       state: {
                         deliveryType: "schedule",
@@ -237,9 +228,6 @@ const DisplayCartItem = ({ close }) => {
             </div>
           </div>
         )}
-
-
-        
       </div>
     </section>
   );

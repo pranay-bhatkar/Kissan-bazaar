@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
 
           {/* Links Section */}
-          
+
           {/* Contact Section */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <p className="font-bold text-xl">Contact</p>
@@ -32,13 +32,13 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center md:items-start text-center md:text-center">
-              <p className="font-bold text-xl">Operates In</p>
-              <div className="font-normal space-y-2">
-                <p>Dombivli</p>
-                <p>Thane</p>
-                <p>Navi Mumbai</p>
-              </div>
+            <p className="font-bold text-xl">Operates In</p>
+            <div className="font-normal space-y-2">
+              <p>Dombivli</p>
+              <p>Thane</p>
+              <p>Navi Mumbai</p>
             </div>
+          </div>
         </div>
 
         {/* Bottom Section */}
@@ -46,20 +46,38 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
             {/* Social Media Section */}
             <div className="flex gap-4">
-              {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map(
-                (Icon, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="bg-white p-2 rounded-full text-green-700 hover:bg-green-600 hover:text-white transition duration-300"
-                  >
-                    <Icon className="w-5 h-5" />
-                  </a>
-                )
-              )}
+              {[
+                // {
+                //   icon: FaFacebookF,
+                //   url: "https://www.facebook.com/kissanbazzar", // Replace with your actual link
+                // },
+                // {
+                //   icon: FaTwitter,
+                //   url: "https://twitter.com/kissanbazzar", // Replace with your actual link
+                // },
+                {
+                  icon: FaInstagram,
+                  url: "https://www.instagram.com/kissanbazzar.in", // Replace with your actual link
+                },
+                // {
+                //   icon: FaLinkedinIn,
+                //   url: "https://www.linkedin.com/company/kissanbazzar", // Replace with your actual link
+                // },
+              ].map(({ icon: Icon, url }, index) => (
+                <a
+                  key={index}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white p-2 rounded-full text-green-700 hover:bg-green-600 hover:text-white transition duration-300"
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
+
             <p className="text-sm">
-              © {new Date().getFullYear()} KisaanBazzar. All rights reserved.
+              © {new Date().getFullYear()} KissanBazzar. All rights reserved.
             </p>
           </div>
         </div>

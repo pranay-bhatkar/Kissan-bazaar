@@ -9,21 +9,21 @@ const customerReviews = [
     location: "Dombivali",
     image: "",
     review:
-      "I just used KisanBazzar. I really liked their plan — 1kg vegetable free on every 5kg.",
+      "I just used KissanBazzar. I really liked their plan — 1kg vegetable free on every 5kg.",
   },
   {
     name: "Shivani Manhas",
     location: "Mumbai",
     image: "",
     review:
-      "I recently ordered vegetables from KisanBazzar at night, and I received a fresh delivery in the morning — with free delivery.",
+      "I recently ordered vegetables from KissanBazzar at night, and I received a fresh delivery in the morning — with free delivery.",
   },
   {
     name: "Rupesh Singh",
     location: "Mumbai",
     image: "",
     review:
-      " I ordered vegetables through KisanBazzar's Daily Fresh From Farmers service, and I received a fresh, fast, and free delivery in the morning.",
+      " I ordered vegetables through KissanBazzar's Daily Fresh From Farmers service, and I received a fresh, fast, and free delivery in the morning.",
   },
 ];
 
