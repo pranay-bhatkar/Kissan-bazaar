@@ -76,7 +76,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <GlobalProvider>
         <Header />
-        <main className="min-h-auto">
+        <main className="min-h-screen w-full max-w-full overflow-x-hidden">
           <Outlet />
         </main>
         <Toaster />

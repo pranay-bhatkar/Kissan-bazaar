@@ -1,113 +1,113 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Link, } from 'react-router-dom'
-import AxiosToastError from '../utils/AxiosToastError'
-import Axios from '../utils/Axios'
-import SummaryApi from '../common/SummaryApi'
-import CardLoading from './CardLoading'
-import CardProduct from './CardProduct'
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import AxiosToastError from "../utils/AxiosToastError";
+import Axios from "../utils/Axios";
+import SummaryApi from "../common/SummaryApi";
+import CardLoading from "./CardLoading";
+import CardProduct from "./CardProduct";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { useSelector } from 'react-redux'
-import { valideURLConvert } from '../utils/valideURLConvert'
+import { useSelector } from "react-redux";
+import { valideURLConvert } from "../utils/valideURLConvert";
 
 const CategoryWiseProductDisplay = ({ id, name }) => {
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    const containerRef = useRef()
-    const subCategoryData = useSelector(state => state.product.allSubCategory)
-    const loadingCardNumber = new Array(6).fill(null)
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const containerRef = useRef();
+  const subCategoryData = useSelector((state) => state.product.allSubCategory);
+  const loadingCardNumber = new Array(6).fill(null);
 
-    const fetchCategoryWiseProduct = async () => {
-        try {
-            setLoading(true)
-            const response = await Axios({
-                ...SummaryApi.getProductByCategory,
-                data: {
-                    id: id
-                }
-            })
+  const fetchCategoryWiseProduct = async () => {
+    try {
+      setLoading(true);
+      const response = await Axios({
+        ...SummaryApi.getProductByCategory,
+        data: { id },
+      });
 
-            const { data: responseData } = response
-
-            if (responseData.success) {
-                setData(responseData.data)
-            }
-        } catch (error) {
-            AxiosToastError(error)
-        } finally {
-            setLoading(false)
-        }
+      if (response?.data?.success) {
+        setData(response.data.data);
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    useEffect(() => {
-        fetchCategoryWiseProduct()
-    }, [])
+  useEffect(() => {
+    fetchCategoryWiseProduct();
+  }, []);
 
-    const handleScrollRight = () => {
-        containerRef.current.scrollLeft += 200
+  const handleScroll = (offset) => {
+    if (containerRef.current) {
+      containerRef.current.scrollLeft += offset;
     }
+  };
 
-    const handleScrollLeft = () => {
-        containerRef.current.scrollLeft -= 200
-    }
+  const getRedirectURL = () => {
+    const subcategory = subCategoryData.find((sub) =>
+      sub.category.some((c) => c._id === id)
+    );
+    if (!subcategory) return "#";
+    return `/${valideURLConvert(name)}-${id}/${valideURLConvert(
+      subcategory.name
+    )}-${subcategory._id}`;
+  };
 
-    
+  const redirectURL = getRedirectURL();
 
-  
-
-  const handleRedirectProductListpage = ()=>{
-      const subcategory = subCategoryData.find(sub =>{
-        const filterData = sub.category.some(c => {
-          return c._id == id
-        })
-
-        return filterData ? true : null
-      })
-      const url = `/${valideURLConvert(name)}-${id}/${valideURLConvert(subcategory?.name)}-${subcategory?._id}`
-
-      return url
-  }
-
-  const redirectURL =  handleRedirectProductListpage()
-    return (
-        <div>
-            <div className='container mx-auto p-4 flex items-center justify-between gap-4 border-2 rounded-md border-green-600 bg-white shadow-lg gap-y-4 my-2'>
-                <h3 className='font-semibold text-lg md:text-xl'>{name}</h3>
-                <Link  to={redirectURL} className='text-green-600 hover:text-green-400 font-sans'>See All</Link>
-            </div>
-            <div className='relative flex items-center justify-center'>
-                <div className=' flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth' ref={containerRef}>
-                    {loading &&
-                        loadingCardNumber.map((_, index) => {
-                            return (
-                                <CardLoading key={"CategorywiseProductDisplay123" + index} />
-                            )
-                        })
-                    }
-
-
-                    {
-                        data.map((p, index) => {
-                            return (
-                                <CardProduct
-                                    data={p}
-                                    key={p._id + "CategorywiseProductDisplay" + index}
-                                />
-                            )
-                        })
-                    }
-
-                </div>
-                <div className='w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between'>
-                    <button onClick={handleScrollLeft} className='z-10 relative bg-white hover:bg-gray-100 shadow-lg text-lg p-2 rounded-full'>
-                        <FaAngleLeft />
-                    </button>
-                    <button onClick={handleScrollRight} className='z-10 relative  bg-white hover:bg-gray-100 shadow-lg p-2 text-lg rounded-full'>
-                        <FaAngleRight />
-                    </button>
-                </div>
-            </div>
+  return (
+    <section className="py-4">
+      {/* Section Header */}
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="w-full py-3 px-3 flex items-center justify-between border border-green-600 bg-white shadow-md rounded-md">
+          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">
+            {name}
+          </h3>
+          <Link
+            to={redirectURL}
+            className="text-green-600 hover:text-green-400 text-sm font-medium"
+          >
+            See All
+          </Link>
         </div>
-    )
-}
+      </div>
 
-export default CategoryWiseProductDisplay
+      {/* Scrollable Product Cards */}
+      <div className="relative mt-4">
+        <div
+          ref={containerRef}
+          className="flex gap-4 sm:gap-5 md:gap-6 px-4 container mx-auto overflow-x-auto scroll-smooth scrollbar-hide"
+        >
+          {loading
+            ? loadingCardNumber.map((_, idx) => (
+                <CardLoading key={`loader-${idx}`} />
+              ))
+            : data.map((p, idx) => (
+                <CardProduct key={p._id + "-prod"} data={p} />
+              ))}
+        </div>
+
+        {/* Scroll Buttons for Desktop */}
+        <div className="hidden lg:flex justify-between items-center absolute top-1/2 left-0 right-0 px-4 transform -translate-y-1/2 pointer-events-none">
+          <button
+            onClick={() => handleScroll(-300)}
+            className="bg-white text-gray-700 hover:bg-gray-100 rounded-full shadow-md p-2 pointer-events-auto"
+            aria-label="Scroll Left"
+          >
+            <FaAngleLeft size={20} />
+          </button>
+          <button
+            onClick={() => handleScroll(300)}
+            className="bg-white text-gray-700 hover:bg-gray-100 rounded-full shadow-md p-2 pointer-events-auto"
+            aria-label="Scroll Right"
+          >
+            <FaAngleRight size={20} />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CategoryWiseProductDisplay;

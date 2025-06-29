@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { BsCartFill } from "react-icons/bs";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 
 import Search from "./Search";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaRegCircleUser } from "react-icons/fa6";
-import useMobile from "../hooks/useMobile";
-import { BsCart4, BsCartFill } from "react-icons/bs";
-import { useSelector } from "react-redux";
-import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import UserMenu from "./UserMenu";
-import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
-import { useGlobalContext } from "../provider/GlobalProvider";
 import DisplayCartItem from "./DisplayCartItem";
+import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
+import useMobile from "../hooks/useMobile";
+import { useGlobalContext } from "../provider/GlobalProvider";
+
 import logo from "../assets/logo.png";
 
 const Header = () => {
@@ -19,128 +20,93 @@ const Header = () => {
   const isSearchPage = location.pathname === "/search";
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
-  const [openUserMenu, setOpenUserMenu] = useState(false);
   const cartItem = useSelector((state) => state.cartItem.cart);
-  // const [totalPrice,setTotalPrice] = useState(0)
-  // const [totalQty,setTotalQty] = useState(0)
   const { totalPrice, totalQty } = useGlobalContext();
+
+  const [openUserMenu, setOpenUserMenu] = useState(false);
   const [openCartSection, setOpenCartSection] = useState(false);
-
-  const redirectToLoginPage = () => {
-    navigate("/login");
-  };
-
-  const handleCloseUserMenu = () => {
-    setOpenUserMenu(false);
-  };
 
   const handleMobileUser = () => {
     if (!user._id) {
       navigate("/login");
-      return;
+    } else {
+      navigate("/user");
     }
-
-    navigate("/user");
   };
 
-  //total item and total price
-  // useEffect(()=>{
-  //     const qty = cartItem.reduce((preve,curr)=>{
-  //         return preve + curr.quantity
-  //     },0)
-  //     setTotalQty(qty)
-
-  //     const tPrice = cartItem.reduce((preve,curr)=>{
-  //         return preve + (curr.productId.price * curr.quantity)
-  //     },0)
-  //     setTotalPrice(tPrice)
-
-  // },[cartItem])
-
   return (
-    <header className="h-20 lg:h-20 lg:shadow-md shadow-md sticky top-0 z-40 flex flex-col justify-center gap-2 bg-white ">
-      {!(isSearchPage && isMobile) && (
-        <div className="container mx-auto flex items-center gap-5 px-2 justify-between">
-          {/**logo */}
-          <div className="h-full">
-            <Link to={"/"} className="h-full flex justify-center items-center">
+    <>
+      <header className="sticky top-0 z-50 bg-white shadow-md h-16 sm:h-20">
+        {!isSearchPage && (
+          <div className="container mx-auto px-3 h-full flex items-center justify-between gap-2">
+            {/* Logo */}
+            <Link to="/" className="flex items-center h-full">
               <img
                 src={logo}
-                width={170}
-                height={60}
-                alt="logo"
-                className="hidden lg:block"
-              />
-              <img
-                src={logo}
-                width={120}
-                height={60}
-                alt="logo"
-                className="lg:hidden"
+                alt="KissanBazzar Logo"
+                className="w-28 sm:w-36 md:w-40 object-contain"
               />
             </Link>
-          </div>
 
-          {/**Search */}
-          <div className="w-full max-w-md ">
-            <Search />
-          </div>
+            {/* Search (only for medium and up) */}
+            <div className="flex-grow max-w-md w-full hidden sm:block">
+              <Search />
+            </div>
 
-          {/**login and my cart */}
-          <div className="">
-            {/**user icons display in only mobile version**/}
-            <button
-              className="text-neutral-600 lg:hidden"
-              onClick={handleMobileUser}
-            >
-              <FaRegCircleUser size={30} color="green" />
-            </button>
+            {/* Right Section */}
+            <div className="flex items-center gap-3">
+              {/* Mobile User Icon */}
+              <button
+                className="lg:hidden text-green-600"
+                onClick={handleMobileUser}
+                aria-label="User"
+              >
+                <FaRegCircleUser size={26} />
+              </button>
 
-            {/**Desktop**/}
-            <div className="hidden lg:flex  items-center gap-10">
-              {user?._id ? (
-                <div className="relative">
+              {/* Desktop Login / Account */}
+              <div className="hidden lg:block relative">
+                {user?._id ? (
                   <div
-                    onClick={() => setOpenUserMenu((preve) => !preve)}
-                    className="flex select-none items-center gap-1 cursor-pointer"
+                    onClick={() => setOpenUserMenu((prev) => !prev)}
+                    className="cursor-pointer flex items-center gap-1 select-none"
                   >
-                    <p>Account</p>
+                    <p className="font-medium">Account</p>
                     {openUserMenu ? (
-                      <GoTriangleUp size={25} />
+                      <GoTriangleUp size={20} />
                     ) : (
-                      <GoTriangleDown size={25} />
+                      <GoTriangleDown size={20} />
                     )}
                   </div>
-                  {openUserMenu && (
-                    <div className="absolute right-0 top-12">
-                      <div className="bg-white rounded p-4 min-w-52 lg:shadow-lg">
-                        <UserMenu close={handleCloseUserMenu} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <button
-                  onClick={redirectToLoginPage}
-                  className="text-2xl px-2 text-green-600 font-bold"
-                >
-                  Login
-                </button>
-              )}
+                ) : (
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="text-green-600 font-semibold"
+                  >
+                    Login
+                  </button>
+                )}
+
+                {/* Dropdown */}
+                {openUserMenu && (
+                  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded z-40">
+                    <UserMenu close={() => setOpenUserMenu(false)} />
+                  </div>
+                )}
+              </div>
+
+              {/* Cart Button */}
               <button
                 onClick={() => setOpenCartSection(true)}
-                className="flex items-center gap-2 bg-green-900 hover:bg-green-700 px-3 py-2 rounded text-white"
+                className="flex items-center gap-2 bg-green-700 hover:bg-green-600 px-3 py-2 rounded text-white"
               >
-                {/**add to card icons */}
-                <div className="animate-none">
-                  <BsCartFill size={26} />
-                </div>
-                <div className="font-semibold text-sm">
-                  {cartItem[0] ? (
-                    <div>
+                <BsCartFill size={20} />
+                <div className="text-sm font-semibold text-left">
+                  {cartItem.length > 0 ? (
+                    <>
                       <p>{totalQty} Items</p>
                       <p>{DisplayPriceInRupees(totalPrice)}</p>
-                    </div>
+                    </>
                   ) : (
                     <p>My Cart</p>
                   )}
@@ -148,13 +114,23 @@ const Header = () => {
               </button>
             </div>
           </div>
+        )}
+      </header>
+
+      {/* Mobile Search Bar (outside header) */}
+      {!isSearchPage && isMobile && (
+        <div className="w-full px-3 pt-2 pb-1 sm:hidden bg-white shadow-sm z-40">
+          <div className="max-w-md mx-auto">
+            <Search />
+          </div>
         </div>
       )}
 
+      {/* Cart Modal */}
       {openCartSection && (
         <DisplayCartItem close={() => setOpenCartSection(false)} />
       )}
-    </header>
+    </>
   );
 };
 

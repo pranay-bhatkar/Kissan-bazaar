@@ -9,8 +9,7 @@ import QRCodeModal from "../components/QRPayment";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
-
-import qrImageUrl from "../assets/gpayQR.jpg";
+import qrImageUrl from "../assets/Gpay-QR.jpg";
 
 const CheckoutPage = () => {
   const handlingCharge = 10;
@@ -40,13 +39,11 @@ const CheckoutPage = () => {
     }
   }, [addressList, selectAddress]);
 
-  // 🆕 Delivery type foundation (default instant)
   const deliveryType = location.state?.deliveryType || "instant";
-
   const deliverySlot = location.state?.deliverySlot || null;
 
   const handleCashOnDelivery = async () => {
-    if (selectAddress === null) {
+    if (!selectAddress) {
       toast.error("Please select an address before proceeding.");
       return;
     }
@@ -59,17 +56,16 @@ const CheckoutPage = () => {
           addressId: selectAddress,
           subTotalAmt: totalPrice,
           totalAmt: totalPrice,
-          deliveryType: deliveryType, // 🆕 send to backend
-          deliverySlot: deliverySlot,
+          deliveryType,
+          deliverySlot,
         },
       });
 
       const { data: responseData } = response;
-
       if (responseData.success) {
         toast.success(responseData.message);
-        fetchCartItem && fetchCartItem();
-        fetchOrder && fetchOrder();
+        fetchCartItem();
+        fetchOrder();
         navigate("/success", {
           state: {
             text: deliveryType === "schedule" ? "Subscription Order" : "Order",
@@ -86,7 +82,7 @@ const CheckoutPage = () => {
       toast.error("Please select an address before proceeding.");
       return;
     }
-    setShowQR(true); // Show static GPay QR modal
+    setShowQR(true);
   };
 
   const handleSubmitTransactionId = async (txnId) => {
@@ -115,6 +111,12 @@ const CheckoutPage = () => {
     } catch (error) {
       AxiosToastError(error);
     }
+  };
+
+  const slotMessages = {
+    morning: "within the next 50 minutes",
+    evening: "within the next 50 minutes",
+    night: "next morning between 7 AM - 8 AM",
   };
 
   return (
@@ -167,7 +169,6 @@ const CheckoutPage = () => {
 
         <div className="w-full max-w-md bg-white py-4 px-2">
           <h3 className="text-lg font-semibold">Summary</h3>
-
           <BillDetails
             notDiscountTotalPrice={notDiscountTotalPrice}
             totalPrice={totalPrice}
@@ -176,23 +177,19 @@ const CheckoutPage = () => {
             deliveryCharge={deliveryCharge}
           />
 
-          <div className="w-full flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4 mt-4">
             <button
               className="py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold"
               onClick={handleQRPayment}
             >
-              {deliveryType === "schedule"
-                ? "Scan QR code or Online"
-                : "Scan QR code or Online"}
+              Scan QR code or Online
             </button>
 
             <button
               className="py-2 px-4 border-2 border-green-600 font-semibold text-green-600 hover:bg-green-600 hover:text-white"
               onClick={handleCashOnDelivery}
             >
-              {deliveryType === "schedule"
-                ? "Cash on Delivery"
-                : "Cash on Delivery"}
+              Cash on Delivery
             </button>
           </div>
         </div>
@@ -200,14 +197,11 @@ const CheckoutPage = () => {
 
       {openAddress && <AddAddress close={() => setOpenAddress(false)} />}
 
+      {/* ✅ Delivery Message Display */}
       {deliveryType === "schedule" && deliverySlot && (
         <p className="text-sm text-gray-500 text-center mt-2">
           You selected the <strong>{deliverySlot}</strong> slot — items will be
-          delivered by{" "}
-          <strong>
-            {deliverySlot === "morning" ? "order will be deliverd in next 1 hour" : "next morning"}
-          </strong>
-          .
+          delivered <strong>{slotMessages[deliverySlot]}</strong>.
         </p>
       )}
 
@@ -218,7 +212,7 @@ const CheckoutPage = () => {
         </p>
       )}
 
-      {/* ✅ Show QR Modal */}
+      {/* ✅ QR Modal */}
       {showQR && (
         <QRCodeModal
           qrUrl={qrUrl}

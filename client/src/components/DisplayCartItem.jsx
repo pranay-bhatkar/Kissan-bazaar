@@ -18,7 +18,6 @@ const DisplayCartItem = ({ close }) => {
   const navigate = useNavigate();
 
   const [showDeliveryOptions, setShowDeliveryOptions] = useState(false);
-  const [selectedDelivery, setSelectedDelivery] = useState("");
   const [scheduledSlotModal, setScheduledSlotModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
 
@@ -29,16 +28,36 @@ const DisplayCartItem = ({ close }) => {
   const redirectToCheckoutPage = () => {
     if (user?._id) {
       setShowDeliveryOptions(true);
-      return;
+    } else {
+      toast.error("Please Login to proceed.");
     }
-    toast("Please Login");
   };
 
   const handleDeliverySelection = (option) => {
-    setSelectedDelivery(option);
+    localStorage.setItem("deliveryType", option);
     setShowDeliveryOptions(false);
     navigate("/checkout", {
       state: { deliveryType: option },
+    });
+  };
+
+  const handleScheduleConfirm = () => {
+    if (!selectedSlot) {
+      toast.error("Please select a time slot");
+      return;
+    }
+
+    localStorage.setItem("selectedSlot", selectedSlot);
+    localStorage.setItem("deliveryType", "schedule");
+
+    setScheduledSlotModal(false);
+    setShowDeliveryOptions(false);
+
+    navigate("/checkout", {
+      state: {
+        deliveryType: "schedule",
+        deliverySlot: selectedSlot,
+      },
     });
   };
 
@@ -60,7 +79,6 @@ const DisplayCartItem = ({ close }) => {
         <div className="min-h-[75vh] lg:min-h-[80vh] h-full max-h-[calc(100vh-150px)] bg-blue-50 p-2 flex flex-col gap-4">
           {cartItem.length > 0 ? (
             <>
-              {/* Savings Info */}
               <div className="flex items-center justify-between px-4 py-2 bg-blue-100 text-blue-500 rounded-full">
                 <p>Your total savings</p>
                 <p>
@@ -68,11 +86,10 @@ const DisplayCartItem = ({ close }) => {
                 </p>
               </div>
 
-              {/* Cart Items */}
               <div className="bg-white rounded-lg p-4 grid gap-5 overflow-auto">
                 {cartItem.map((item) => (
                   <div key={item?._id} className="flex w-full gap-4">
-                    <div className="w-16 h-16 flex items-center justify-center bg-white border rounded">
+                    <div className="w-20 h-20 flex items-center justify-center bg-white border rounded">
                       <img
                         src={item?.productId?.image[0]}
                         alt={item?.productId?.name}
@@ -80,7 +97,7 @@ const DisplayCartItem = ({ close }) => {
                       />
                     </div>
                     <div className="w-full max-w-sm text-xs">
-                      <p className="text-xs text-ellipsis line-clamp-2">
+                      <p className="text-xs line-clamp-2">
                         {item?.productId?.name}
                       </p>
                       <p className="text-neutral-400">
@@ -95,14 +112,10 @@ const DisplayCartItem = ({ close }) => {
                         )}
                       </p>
                     </div>
-                    <div>
-                      <AddToCartButton data={item?.productId} />
-                    </div>
+                    <AddToCartButton data={item?.productId} />
                   </div>
                 ))}
               </div>
-
-              {/* Bill Details */}
 
               <BillDetails
                 notDiscountTotalPrice={notDiscountTotalPrice}
@@ -113,7 +126,6 @@ const DisplayCartItem = ({ close }) => {
               />
             </>
           ) : (
-            // Empty Cart UI
             <div className="bg-white flex flex-col justify-center items-center p-4 rounded-lg">
               <img
                 src={imageEmpty}
@@ -159,7 +171,10 @@ const DisplayCartItem = ({ close }) => {
               </button>
               <button
                 className="w-full border border-green-600 text-green-600 py-2 rounded mb-2"
-                onClick={() => setScheduledSlotModal(true)}
+                onClick={() => {
+                  setScheduledSlotModal(true);
+                  setShowDeliveryOptions(false);
+                }}
               >
                 Schedule Delivery
               </button>
@@ -187,7 +202,7 @@ const DisplayCartItem = ({ close }) => {
                 }`}
                 onClick={() => setSelectedSlot("morning")}
               >
-                Morning (9:00 AM - 12:00 PM) (deliverd in next one hour)
+                Order Between 9 AM – 12 PM, Get Groceries in 50 minutes
               </button>
 
               <button
@@ -198,7 +213,18 @@ const DisplayCartItem = ({ close }) => {
                 }`}
                 onClick={() => setSelectedSlot("evening")}
               >
-                Evening (7:00 PM - 12:00 AM) (Delivery by Morning)
+                Order Between 4 PM – 7 PM, Get Groceries in 50 minutes
+              </button>
+
+              <button
+                className={`w-full py-2 rounded mb-2 ${
+                  selectedSlot === "night"
+                    ? "bg-green-600 text-white"
+                    : "bg-neutral-200"
+                }`}
+                onClick={() => setSelectedSlot("night")}
+              >
+                Order Between 9 PM – 1 AM, Get Groceries by 7–8 AM
               </button>
 
               <div className="flex justify-between gap-2 mt-4">
@@ -211,16 +237,7 @@ const DisplayCartItem = ({ close }) => {
                 <button
                   className="flex-1 py-2 rounded bg-green-700 text-white"
                   disabled={!selectedSlot}
-                  onClick={() => {
-                    setScheduledSlotModal(false);
-                    setShowDeliveryOptions(false);
-                    navigate("/checkout", {
-                      state: {
-                        deliveryType: "schedule",
-                        deliverySlot: selectedSlot,
-                      },
-                    });
-                  }}
+                  onClick={handleScheduleConfirm}
                 >
                   Confirm
                 </button>

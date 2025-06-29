@@ -39,62 +39,88 @@ const WhyShop = () => {
   const scrollRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Auto-scroll logic
+  // Auto-scroll for mobile view
   useEffect(() => {
     const container = scrollRef.current;
-    if (!container) return;
+    if (!container || window.innerWidth >= 768) return;
 
     const interval = setInterval(() => {
       if (isHovered) return;
-      container.scrollBy({ left: 300, behavior: "smooth" });
 
-      // Reset to start if near end
       if (
         container.scrollLeft + container.offsetWidth >=
         container.scrollWidth - 10
       ) {
         container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        container.scrollBy({ left: 320, behavior: "smooth" });
       }
-    }, 1000); // every 3 seconds
+    }, 3000); // every 3s
 
     return () => clearInterval(interval);
   }, [isHovered]);
 
   return (
-    <div className="py-12 rounded-xl text-center mb-10">
-      <h2 className="text-3xl font-bold text-gray-800 mb-10">
+    <section className="py-12 px-4 sm:px-6 md:px-10 bg-gray-50">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-10">
         Why Shop From <span className="text-green-600">KissanBazzar?</span>
       </h2>
 
+      {/* Mobile Scrollable */}
       <div
         ref={scrollRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="flex md:flex-wrap overflow-x-auto md:overflow-visible gap-6 px-6 md:justify-center scrollbar-hide scroll-snap-x"
+        className="flex gap-6 overflow-x-auto md:hidden scrollbar-hide scroll-smooth px-2 pb-2 py-5"
       >
         {features.map((feature) => (
           <motion.div
             key={feature.id}
-            className="flex min-w-[350px] md:min-w-0 snap-start items-center bg-white border-2 shadow-lg rounded-lg p-5 text-left md:w-full md:max-w-sm"
-            whileHover={{ scale: 1.05 }}
+            className="min-w-[300px] bg-white border-2 shadow-md rounded-lg p-5 flex items-center"
+            whileHover={{ scale: 1.03 }}
           >
             <img
               src={feature.image}
               alt={feature.title}
-              className="w-20 h-20 object-cover rounded-full border-4 border-green-500"
+              className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full border-4 border-green-500"
             />
             <div className="ml-4">
               <h3 className="text-lg font-bold text-green-600">
                 {feature.title}
               </h3>
-              <p className="font-medium text-gray-600 text-sm mt-2 text-justify">
+              <p className="text-sm font-medium text-gray-600 mt-2 text-justify">
                 {feature.description}
               </p>
             </div>
           </motion.div>
         ))}
       </div>
-    </div>
+
+      {/* Desktop Grid */}
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        {features.map((feature) => (
+          <motion.div
+            key={feature.id}
+            className="bg-white border-2 shadow-md rounded-lg p-5 flex items-center"
+            whileHover={{ scale: 1.03 }}
+          >
+            <img
+              src={feature.image}
+              alt={feature.title}
+              className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full border-4 border-green-500"
+            />
+            <div className="ml-4">
+              <h3 className="text-lg font-bold text-green-600">
+                {feature.title}
+              </h3>
+              <p className="text-sm font-medium text-gray-600 mt-2 text-justify">
+                {feature.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 };
 
