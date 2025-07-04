@@ -1,46 +1,35 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
+import image2 from "../assets/fast.png";
+import image1 from "../assets/fixed.png";
+import image3 from "../assets/free.jpg";
 import SummaryApi from "../common/SummaryApi";
+import AddToCartButton from "../components/AddToCartButton";
+import Divider from "../components/Divider";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
-import Divider from "../components/Divider";
-import image1 from "../assets/fixed.png";
-import image2 from "../assets/fast.png";
-import image3 from "../assets/free.jpg";
 import { pricewithDiscount } from "../utils/PriceWithDiscount";
-import AddToCartButton from "../components/AddToCartButton";
 
 const ProductDisplayPage = () => {
   const params = useParams();
-  let productId = params?.product?.split("-")?.slice(-1)[0];
-  const [data, setData] = useState({
-    name: "",
-    image: [],
-  });
+  const productId = params?.product?.split("-")?.slice(-1)[0];
+  const [data, setData] = useState({ name: "", image: [] });
   const [image, setImage] = useState(0);
-  const [loading, setLoading] = useState(false);
   const imageContainer = useRef();
 
   const fetchProductDetails = async () => {
     try {
       const response = await Axios({
         ...SummaryApi.getProductDetails,
-        data: {
-          productId: productId,
-        },
+        data: { productId },
       });
 
       const { data: responseData } = response;
-
-      if (responseData.success) {
-        setData(responseData.data);
-      }
+      if (responseData.success) setData(responseData.data);
     } catch (error) {
       AxiosToastError(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -54,214 +43,194 @@ const ProductDisplayPage = () => {
   const handleScrollLeft = () => {
     imageContainer.current.scrollLeft -= 100;
   };
-  console.log("product data", data);
+
   return (
-    <section className="container mx-auto p-4 grid lg:grid-cols-2 ">
-      <div className="">
-        <div className="bg-white py-2 border-2 lg:min-h-[65vh] lg:max-h-[65vh] rounded min-h-56 max-h-56 h-full w-full">
+    <section className="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white">
+      {/* Image Section */}
+      <div>
+        {/* Main Image */}
+        <div className="bg-white border-2  rounded w-full h-64 sm:h-80 md:h-[65vh] flex items-center justify-center">
           <img
             src={data.image[image]}
-            className="w-full h-full object-scale-down "
+            alt="Main"
+            className="max-h-full max-w-full object-contain"
           />
         </div>
-        <div className="flex items-center justify-center gap-3 my-2">
-          {data.image.map((img, index) => {
-            return (
-              <div
-                key={img + index + "point"}
-                className={`bg-slate-200 w-3 h-3 lg:w-5 lg:h-5 rounded-full ${
-                  index === image && "bg-slate-300"
-                }`}
-              ></div>
-            );
-          })}
+
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-2 mt-3">
+          {data.image.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 lg:w-5 lg:h-5 rounded-full ${
+                image === index ? "bg-green-600" : "bg-gray-300"
+              }`}
+            />
+          ))}
         </div>
-        <div className="grid relative">
+
+        {/* Thumbnails */}
+        <div className="relative mt-4">
+          {/* Scrollable thumbnail container */}
           <div
             ref={imageContainer}
-            className="flex gap-4 z-10 relative w-full overflow-x-auto scrollbar-none"
+            className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth pr-10"
           >
-            {data.image.map((img, index) => {
-              return (
-                <div
-                  className="w-20 h-20 min-h-20 min-w-20 scr cursor-pointer shadow-md"
-                  key={img + index}
-                >
-                  <img
-                    src={img}
-                    alt="min-product"
-                    onClick={() => setImage(index)}
-                    className="w-full h-full object-scale-down"
-                  />
-                </div>
-              );
-            })}
+            {data.image.map((img, index) => (
+              <div
+                key={img + index}
+                className={`min-w-20 min-h-20 w-20 h-20 flex-shrink-0 cursor-pointer border rounded shadow-sm transition-transform duration-150 ${
+                  image === index ? " " : ""
+                }`}
+                onClick={() => setImage(index)}
+              >
+                <img
+                  src={img}
+                  alt={`thumb-${index}`}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ))}
           </div>
-          <div className="w-full -ml-3 h-full hidden lg:flex justify-between absolute  items-center">
+
+          {/* Arrows (moved and styled to avoid overlapping images) */}
+          <div className="hidden lg:flex justify-between items-center absolute top-1/2 -left-4 -right-2 -translate-y-1/2 px-1 pointer-events-none">
             <button
               onClick={handleScrollLeft}
-              className="z-10 bg-white relative p-1 rounded-full shadow-lg"
+              className="bg-white p-2 rounded-full shadow-lg pointer-events-auto translate-x-[-50%]"
+              style={{ marginLeft: "-12px" }}
             >
               <FaAngleLeft />
             </button>
             <button
               onClick={handleScrollRight}
-              className="z-10 bg-white relative p-1 rounded-full shadow-lg"
+              className="bg-white p-2 rounded-full shadow-lg pointer-events-auto translate-x-[50%]"
+              style={{ marginRight: "-12px" }}
             >
               <FaAngleRight />
             </button>
           </div>
         </div>
-        <div></div>
 
-        <div className="my-4  hidden lg:grid gap-3 ">
+        {/* Details (Desktop Only) */}
+        <div className="hidden lg:grid gap-4 mt-6">
           <div>
             <p className="font-semibold">Description</p>
-            <p className="text-base">{data.description}</p>
+            <p>{data.description}</p>
           </div>
-
           <div>
             <p className="font-semibold">Unit</p>
-            <p className="text-base">{data.unit}</p>
+            <p>{data.unit}</p>
           </div>
-
           {data?.more_details &&
-            Object.keys(data?.more_details).map((element, index) => {
-              return (
-                <div>
-                  <p className="font-semibold">{element}</p>
-                  <p className="text-base">{data?.more_details[element]}</p>
-                </div>
-              );
-            })}
+            Object.entries(data.more_details).map(([key, value], i) => (
+              <div key={i}>
+                <p className="font-semibold">{key}</p>
+                <p>{value}</p>
+              </div>
+            ))}
         </div>
       </div>
 
-      <div className="p-4 lg:pl-7 text-base lg:text-lg">
-        <div className="flex flex-row justify-between sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 p-4 border rounded-xl shadow-sm bg-white ">
-          {/* Name and Stock Info */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
-            <h2 className="text-lg sm:text-xl lg:text-3xl font-semibold text-gray-800">
+      {/* Info Section */}
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="bg-white p-4 border rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+            <h2 className="text-xl lg:text-2xl font-semibold text-gray-800">
               {data.name}
             </h2>
-            <p className="text-sm sm:text-base font-medium text-gray-500">
-              {data.unit}
-            </p>
-          </div>
-
-          {/* Time Badge */}
-          <div className="mt-1 sm:mt-0">
-            <span className="bg-green-100 text-green-700 text-sm sm:text-base font-medium px-4 py-1 rounded-full inline-block">
+            <span className="text-sm text-green-700 bg-green-100 px-3 py-1 rounded-full mt-2 sm:mt-0">
               ⏱️ 10 Min
             </span>
           </div>
+          <p className="text-sm text-gray-500">{data.unit}</p>
         </div>
 
         <Divider />
-        <div className="w-full">
-          <p className="text-sm font-medium text-gray-500 mb-1">Price</p>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-            {/* Final Price */}
-            <div className="border border-green-600 px-4 py-2 rounded-lg bg-green-50 w-fit">
-              <p className="text-lg sm:text-xl font-semibold text-green-800">
-                {DisplayPriceInRupees(
-                  pricewithDiscount(data.price, data.discount)
-                )}
-              </p>
-            </div>
 
-            {/* Original Price (struck-through) */}
-            {data.discount && (
-              <p className="text-sm sm:text-base text-gray-500 line-through">
-                {DisplayPriceInRupees(data.price)}
-              </p>
-            )}
-
-            {/* Discount Info */}
-            {data.discount && (
-              <p className="text-sm sm:text-base font-bold text-green-600 flex items-center gap-1">
-                <span className="text-lg sm:text-2xl">{data.discount}%</span>
-                <span className="text-gray-500 font-medium text-xs sm:text-sm">
-                  OFF
+        {/* Price Block */}
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-gray-500">Price</p>
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="text-green-800 bg-green-100 px-4 py-2 rounded-lg font-semibold">
+              {DisplayPriceInRupees(
+                pricewithDiscount(data.price, data.discount)
+              )}
+            </span>
+            {data.discount > 0 && (
+              <>
+                <span className="line-through text-gray-500 text-sm">
+                  {DisplayPriceInRupees(data.price)}
                 </span>
-              </p>
+                <span className="text-green-600 font-bold">
+                  {data.discount}% OFF
+                </span>
+              </>
             )}
           </div>
         </div>
 
+        {/* Cart Section */}
         {data.stock === 0 ? (
           <p className="text-lg font-medium text-red-500 my-2">Out of Stock</p>
         ) : (
-          <div className="my-4">
-            <AddToCartButton data={data} />
-          </div>
+          <AddToCartButton data={data} />
         )}
 
-        <h2 className="font-semibold">Why shop from Kissan Bazzar? </h2>
+        {/* Why Shop */}
         <div>
-          <div className="flex  items-center gap-4 my-4">
-            <img
-              src={image1}
-              alt="superfast delivery"
-              className="w-20 h-20 bg-white rounded-lg shadow-xl border-2 border-gray-400"
-            />
-            <div className="text-sm">
-              <div className="font-semibold">Superfast Delivery</div>
-              <p className="text-sm font-light">
-                Get your orer delivered to your doorstep at the earliest from
-                dark stores near you.
-              </p>
-            </div>
-          </div>
-          <div className="flex  items-center gap-4 my-4">
-            <img
-              src={image2}
-              alt="Best prices offers"
-              className="w-20 h-20 bg-white rounded-lg shadow-xl border-2 border-gray-400"
-            />
-            <div className="text-sm">
-              <div className="font-semibold">Best Prices & Offers</div>
-              <p className="text-sm font-light">
-                Best price destination with offers directly from the
-                nanufacturers.
-              </p>
-            </div>
-          </div>
-          <div className="flex  items-center gap-4 my-4">
-            <img
-              src={image3}
-              alt="Wide Assortment"
-              className="w-20 h-20 bg-white rounded-lg shadow-xl border-2 border-gray-400"
-            />
-            <div className="text-sm">
-              <div className="font-semibold">Wide Assortment</div>
-              <p className="text-sm font-light">
-                Choose from 5000+ products across food personal care, household
-                & other categories.
-              </p>
-            </div>
+          <h3 className="font-semibold mb-2">Why shop from Kissan Bazzar?</h3>
+          <div className="space-y-4">
+            {[
+              {
+                img: image1,
+                title: "Superfast Delivery",
+                desc: "Get your order delivered to your doorstep at the earliest from dark stores near you.",
+              },
+              {
+                img: image2,
+                title: "Best Prices & Offers",
+                desc: "Best price destination with offers directly from the manufacturers.",
+              },
+              {
+                img: image3,
+                title: "Wide Assortment",
+                desc: "Choose from 5000+ products across food, personal care, household & more.",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-16 h-16 rounded-lg border shadow"
+                />
+                <div className="text-sm">
+                  <p className="font-semibold">{item.title}</p>
+                  <p className="text-xs text-gray-600">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/****only mobile */}
-        <div className="my-4 grid gap-3 lg:hidden">
+        {/* Mobile Details */}
+        <div className="grid gap-4 lg:hidden">
           <div>
             <p className="font-semibold">Description</p>
-            <p className="text-base font-light">{data.description}</p>
+            <p className="text-sm">{data.description}</p>
           </div>
           <div>
             <p className="font-semibold">Unit</p>
-            <p className="text-base font-light">{data.unit}</p>
+            <p className="text-sm">{data.unit}</p>
           </div>
           {data?.more_details &&
-            Object.keys(data?.more_details).map((element, index) => {
-              return (
-                <div>
-                  <p className="font-semibold">{element}</p>
-                  <p className="text-base">{data?.more_details[element]}</p>
-                </div>
-              );
-            })}
+            Object.entries(data.more_details).map(([key, val], i) => (
+              <div key={i}>
+                <p className="font-semibold">{key}</p>
+                <p className="text-sm">{val}</p>
+              </div>
+            ))}
         </div>
       </div>
     </section>

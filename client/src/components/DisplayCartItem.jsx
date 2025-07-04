@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaCaretRight } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import imageEmpty from "../assets/empty_cart.webp";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
@@ -36,6 +36,7 @@ const DisplayCartItem = ({ close }) => {
   const handleDeliverySelection = (option) => {
     localStorage.setItem("deliveryType", option);
     setShowDeliveryOptions(false);
+    close();
     navigate("/checkout", {
       state: { deliveryType: option },
     });
@@ -52,6 +53,7 @@ const DisplayCartItem = ({ close }) => {
 
     setScheduledSlotModal(false);
     setShowDeliveryOptions(false);
+    close();
 
     navigate("/checkout", {
       state: {
@@ -61,25 +63,30 @@ const DisplayCartItem = ({ close }) => {
     });
   };
 
+  // Prevent scroll while cart is open
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden");
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
   return (
     <section className="bg-neutral-900 fixed top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50">
       <div className="bg-white w-full max-w-sm min-h-screen max-h-screen ml-auto relative">
         {/* Header */}
         <div className="flex items-center justify-between p-4 shadow-md gap-3">
           <h2 className="font-semibold">Cart</h2>
-          <Link to={"/"} className="lg:hidden">
-            <IoClose size={25} />
-          </Link>
-          <button onClick={close} className="hidden lg:block">
+          <button onClick={close} className="block">
             <IoClose size={25} />
           </button>
         </div>
 
         {/* Cart Content */}
-        <div className="min-h-[75vh] lg:min-h-[80vh] h-full max-h-[calc(100vh-150px)] bg-blue-50 p-2 flex flex-col gap-4">
+        <div className="min-h-[75vh] lg:min-h-[80vh] h-full max-h-[calc(100vh-150px)] p-2 flex flex-col gap-4">
           {cartItem.length > 0 ? (
             <>
-              <div className="flex items-center justify-between px-4 py-2 bg-blue-100 text-blue-500 rounded-full">
+              <div className="flex items-center justify-between px-4 py-2 bg-green-100 text-green-700 rounded-full">
                 <p>Your total savings</p>
                 <p>
                   {DisplayPriceInRupees(notDiscountTotalPrice - totalPrice)}
@@ -132,13 +139,15 @@ const DisplayCartItem = ({ close }) => {
                 alt="Empty Cart"
                 className="w-full h-full object-scale-down"
               />
-              <Link
-                onClick={close}
-                to={"/"}
+              <button
+                onClick={() => {
+                  close();
+                  navigate("/");
+                }}
                 className="block bg-green-600 px-4 py-2 text-white rounded mt-4"
               >
                 Shop Now
-              </Link>
+              </button>
             </div>
           )}
         </div>
@@ -194,38 +203,24 @@ const DisplayCartItem = ({ close }) => {
             <div className="bg-white p-6 rounded shadow-lg w-80 animate-fade-in">
               <h3 className="font-bold text-lg mb-4">Choose a Slot</h3>
 
-              <button
-                className={`w-full py-2 rounded mb-2 ${
-                  selectedSlot === "morning"
-                    ? "bg-green-600 text-white"
-                    : "bg-neutral-200"
-                }`}
-                onClick={() => setSelectedSlot("morning")}
-              >
-                Order Between 9 AM – 12 PM, Get Groceries in 50 minutes
-              </button>
-
-              <button
-                className={`w-full py-2 rounded mb-2 ${
-                  selectedSlot === "evening"
-                    ? "bg-green-600 text-white"
-                    : "bg-neutral-200"
-                }`}
-                onClick={() => setSelectedSlot("evening")}
-              >
-                Order Between 4 PM – 7 PM, Get Groceries in 50 minutes
-              </button>
-
-              <button
-                className={`w-full py-2 rounded mb-2 ${
-                  selectedSlot === "night"
-                    ? "bg-green-600 text-white"
-                    : "bg-neutral-200"
-                }`}
-                onClick={() => setSelectedSlot("night")}
-              >
-                Order Between 9 PM – 1 AM, Get Groceries by 7–8 AM
-              </button>
+              {["morning", "evening", "night"].map((slot) => (
+                <button
+                  key={slot}
+                  className={`w-full py-2 rounded mb-2 ${
+                    selectedSlot === slot
+                      ? "bg-green-600 text-white"
+                      : "bg-neutral-200"
+                  }`}
+                  onClick={() => setSelectedSlot(slot)}
+                >
+                  {slot === "morning" &&
+                    "Order Between 9 AM – 12 PM, Get Groceries in 50 minutes"}
+                  {slot === "evening" &&
+                    "Order Between 4 PM – 7 PM, Get Groceries in 50 minutes"}
+                  {slot === "night" &&
+                    "Order Between 9 PM – 1 AM, Get Groceries by 7–8 AM"}
+                </button>
+              ))}
 
               <div className="flex justify-between gap-2 mt-4">
                 <button

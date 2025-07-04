@@ -67,16 +67,16 @@ const Home = () => {
         >
           {banners.map((banner, index) => (
             <SwiperSlide key={index}>
-              <div className="w-full aspect-[3/1] sm:aspect-[4/1] lg:aspect-[8/2] overflow-hidden border-4 border-green-600 rounded-2xl">
+              <div className="w-full aspect-[6/2] sm:aspect-[5/2] md:aspect-[12/3] overflow-hidden border-4 border-green-600 rounded-2xl">
                 <img
                   src={banner.desktop}
                   alt={banner.alt}
-                  className="hidden lg:block w-full h-full object-cover rounded-2xl"
+                  className="hidden md:block w-full h-full object-fill rounded-2xl"
                 />
                 <img
                   src={banner.mobile}
                   alt={banner.alt}
-                  className="block lg:hidden w-full h-full object-fill rounded-2xl"
+                  className="block md:hidden w-full h-full object-fill rounded-2xl"
                 />
               </div>
             </SwiperSlide>
@@ -85,7 +85,7 @@ const Home = () => {
       </div>
 
       {/* Category Cards Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 py-4">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6">
           {loadingCategory
             ? new Array(12).fill(null).map((_, index) => (
@@ -112,7 +112,7 @@ const Home = () => {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="text-center text-sm sm:text-base font-semibold mt-2 text-gray-900 leading-tight line-clamp-2 max-w-[90%]">
+                  <p className="text-center text-xs sm:text-sm md:text-base font-semibold mt-2 text-gray-900 leading-tight line-clamp-2 max-w-[90%]">
                     {cat.name}
                   </p>
                 </div>
@@ -123,57 +123,28 @@ const Home = () => {
       {/* Dynamic Category-wise Product Display */}
       <div className="mt-8">
         {categoryData?.map((c) => (
-          <CategoryWiseProductDisplay key={c._id} id={c._id} name={c.name}   />
+          <CategoryWiseProductDisplay key={c._id} id={c._id} name={c.name} />
         ))}
       </div>
 
-      {/* Footer Section */}
-      <div className="pt-8">
+      <div className="mt-8 px-4 sm:px-6 lg:px-8">
         <DirectBuyFromFarmers />
+      </div>
 
-        <div className="mt-8 px-4 sm:px-6 lg:px-8">
-          <Testimonials />
-        </div>
+      <div className="mt-8 px-4 sm:px-6 lg:px-8">
+        <Testimonials />
+      </div>
 
-        {/* Banner slider again */}
-        <div className="mt-6 container mx-auto px-4 sm:px-6 lg:px-8">
-          <Swiper
-            modules={[Pagination, Autoplay]}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            loop
-            className="rounded-2xl overflow-hidden"
-          >
-            {banners.map((banner, index) => (
-              <SwiperSlide key={index}>
-                <div className="w-full aspect-[3/1] sm:aspect-[4/1] lg:aspect-[8/2] overflow-hidden border-4 border-green-600 rounded-2xl">
-                  <img
-                    src={banner.desktop}
-                    alt={banner.alt}
-                    className="hidden lg:block w-full h-full object-cover rounded-2xl"
-                  />
-                  <img
-                    src={banner.mobile}
-                    alt={banner.alt}
-                    className="block lg:hidden w-full h-full object-fill rounded-2xl"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+      <div className="pt-8 px-4 sm:px-6 lg:px-8">
+        <WhyShop />
+      </div>
 
-        <div className="pt-8 px-4 sm:px-6 lg:px-8">
-          <WhyShop />
-        </div>
+      <div className="pt-8 px-4 sm:px-6 lg:px-8">
+        <About />
+      </div>
 
-        <div className="pt-8 px-4 sm:px-6 lg:px-8">
-          <About />
-        </div>
-
-        <div className="pt-10">
-          <Footer />
-        </div>
+      <div className="">
+        <Footer />
       </div>
     </section>
   );

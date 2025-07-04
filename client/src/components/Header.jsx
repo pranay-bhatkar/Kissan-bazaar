@@ -36,25 +36,25 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white shadow-md h-16 sm:h-20">
+      <header className="sticky top-0 z-50 bg-white shadow-md">
         {!isSearchPage && (
-          <div className="container mx-auto px-3 h-full flex items-center justify-between gap-2">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
             {/* Logo */}
             <Link to="/" className="flex items-center h-full">
               <img
                 src={logo}
                 alt="KissanBazzar Logo"
-                className="w-28 sm:w-36 md:w-40 object-contain"
+                className="w-24 sm:w-32 md:w-40 object-contain"
               />
             </Link>
 
-            {/* Search (only for medium and up) */}
-            <div className="flex-grow max-w-md w-full hidden sm:block">
+            {/* Search Bar (Visible on sm and up) */}
+            <div className="hidden sm:block flex-grow max-w-md w-full px-2">
               <Search />
             </div>
 
-            {/* Right Section */}
-            <div className="flex items-center gap-3">
+            {/* Right Controls */}
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Mobile User Icon */}
               <button
                 className="lg:hidden text-green-600"
@@ -64,7 +64,7 @@ const Header = () => {
                 <FaRegCircleUser size={26} />
               </button>
 
-              {/* Desktop Login / Account */}
+              {/* Desktop User Dropdown */}
               <div className="hidden lg:block relative">
                 {user?._id ? (
                   <div
@@ -89,8 +89,8 @@ const Header = () => {
 
                 {/* Dropdown */}
                 {openUserMenu && (
-                  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded z-40">
-                    <UserMenu close={() => setOpenUserMenu(false)} />
+                  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded z-40 min-w-[150px]">
+                    <UserMenu close={() => setOpenUserMenu(false)}  />
                   </div>
                 )}
               </div>
@@ -98,10 +98,10 @@ const Header = () => {
               {/* Cart Button */}
               <button
                 onClick={() => setOpenCartSection(true)}
-                className="flex items-center gap-2 bg-green-700 hover:bg-green-600 px-3 py-2 rounded text-white"
+                className="flex items-center gap-2 bg-green-700 hover:bg-green-600 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded text-white"
               >
                 <BsCartFill size={20} />
-                <div className="text-sm font-semibold text-left">
+                <div className="text-xs sm:text-sm font-semibold text-left leading-tight">
                   {cartItem.length > 0 ? (
                     <>
                       <p>{totalQty} Items</p>
@@ -117,7 +117,7 @@ const Header = () => {
         )}
       </header>
 
-      {/* Mobile Search Bar (outside header) */}
+      {/* Mobile Search Below Header */}
       {!isSearchPage && isMobile && (
         <div className="w-full px-3 pt-2 pb-1 sm:hidden bg-white shadow-sm z-40">
           <div className="max-w-md mx-auto">

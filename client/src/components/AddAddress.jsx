@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
@@ -8,12 +8,15 @@ import { IoClose } from "react-icons/io5";
 import { useGlobalContext } from "../provider/GlobalProvider";
 
 const AddAddress = ({ close }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const { fetchAddress } = useGlobalContext();
 
   const onSubmit = async (data) => {
-    console.log("data", data);
-
     try {
       const response = await Axios({
         ...SummaryApi.createAddress,
@@ -31,86 +34,119 @@ const AddAddress = ({ close }) => {
 
       if (responseData.success) {
         toast.success(responseData.message);
-        if (close) {
-          close();
-          reset();
-          fetchAddress();
-        }
+        reset();
+        fetchAddress();
+        close?.();
       }
     } catch (error) {
       AxiosToastError(error);
     }
   };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "auto");
+  }, []);
+
   return (
-    <section className="bg-black fixed top-0 left-0 right-0 bottom-0 z-50 bg-opacity-70 h-screen overflow-auto">
-      <div className="bg-white p-4 w-full max-w-lg mt-8 mx-auto rounded">
-        <div className="flex justify-between items-center gap-4">
-          <h2 className="font-semibold">Add Address</h2>
-          <button onClick={close} className="hover:text-red-500">
-            <IoClose size={25} />
-          </button>
-        </div>
-        <form className="mt-4 grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-1">
-            <label htmlFor="addressline">Address Line :</label>
+    <section className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4 overflow-y-auto">
+      <div className="bg-white w-full max-w-lg p-6 rounded-xl shadow-xl relative animate-fade-in-up">
+        {/* Close Button */}
+        <button
+          onClick={close}
+          className="absolute top-4 right-4 text-gray-600 hover:text-red-500"
+        >
+          <IoClose size={24} />
+        </button>
+
+        {/* Title */}
+        <h2 className="text-2xl font-bold text-center text-green-700 mb-6">
+          Add Delivery Address
+        </h2>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+          {/* Address Line (Required) */}
+          <div>
             <input
               type="text"
-              id="addressline"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("addressline", { required: true })}
+              placeholder="Address Line *"
+              {...register("addressline", {
+                required: "Address line is required",
+              })}
+              className={`w-full border rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 ${
+                errors.addressline
+                  ? "border-red-500 ring-red-200"
+                  : "border-gray-300 focus:ring-green-500"
+              }`}
             />
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="city">City :</label>
-            <input
-              type="text"
-              id="city"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("city", { required: true })}
-            />
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="state">State :</label>
-            <input
-              type="text"
-              id="state"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("state", { required: true })}
-            />
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="pincode">Pincode :</label>
-            <input
-              type="text"
-              id="pincode"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("pincode", { required: true })}
-            />
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="country">Country :</label>
-            <input
-              type="text"
-              id="country"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("country", { required: true })}
-            />
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="mobile">Mobile No. :</label>
-            <input
-              type="text"
-              id="mobile"
-              className="border bg-blue-50 p-2 rounded"
-              {...register("mobile", { required: true })}
-            />
+            {errors.addressline && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.addressline.message}
+              </p>
+            )}
           </div>
 
+          {/* Mobile (Required) */}
+          <div>
+            <input
+              type="tel"
+              placeholder="Mobile No. *"
+              {...register("mobile", {
+                required: "Mobile number is required",
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: "Enter a valid 10-digit mobile number",
+                },
+              })}
+              className={`w-full border rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 ${
+                errors.mobile
+                  ? "border-red-500 ring-red-200"
+                  : "border-gray-300 focus:ring-green-500"
+              }`}
+            />
+            {errors.mobile && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.mobile.message}
+              </p>
+            )}
+          </div>
+
+          {/* Optional Fields */}
+          <input
+            type="text"
+            placeholder="City (optional)"
+            {...register("city")}
+            className="w-full border border-gray-300 rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          <input
+            type="text"
+            placeholder="State (optional)"
+            {...register("state")}
+            className="w-full border border-gray-300 rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          <input
+            type="text"
+            placeholder="Pincode (optional)"
+            {...register("pincode")}
+            className="w-full border border-gray-300 rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          <input
+            type="text"
+            placeholder="Country (optional)"
+            {...register("country")}
+            className="w-full border border-gray-300 rounded-md bg-blue-50 p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="bg-primary-200 w-full  py-2 font-semibold mt-4 hover:bg-primary-100"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-md transition"
           >
-            Submit
+            Save Address
           </button>
         </form>
       </div>

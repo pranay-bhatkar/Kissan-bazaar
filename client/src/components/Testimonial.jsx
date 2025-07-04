@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 
 const customerReviews = [
   {
@@ -34,22 +33,25 @@ const CustomerReviewCarousel = () => {
         What Our Customers Say
       </h2>
 
-      <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6">
         <Swiper
-          modules={[Navigation, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1}
-          navigation={{
-            nextEl: ".next-btn",
-            prevEl: ".prev-btn",
+          modules={[Autoplay]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
           }}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
           loop={true}
-          className="pb-20" // Space for navigation
+          spaceBetween={20}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
         >
           {customerReviews.map((customer, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-col items-center text-center px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-10 rounded-2xl shadow-md border border-gray-200 bg-gray-50 w-full max-w-md mx-auto min-h-[360px]">
+              <div className="flex flex-col items-center text-center px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-10 rounded-2xl shadow-md border border-gray-200 bg-gray-50 h-[400px] m-2">
                 <img
                   src={
                     customer.image ||
@@ -58,10 +60,10 @@ const CustomerReviewCarousel = () => {
                   alt={customer.name}
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full object-cover mb-4 border-4 border-green-300"
                 />
-                <p className="text-sm sm:text-base md:text-lg text-gray-800 font-medium italic mb-4 max-w-[90%]">
+                <p className="text-sm sm:text-base md:text-lg text-gray-800 font-medium italic mb-4 px-2 line-clamp-4">
                   {customer.review}
                 </p>
-                <div>
+                <div className="mt-auto">
                   <h4 className="text-base sm:text-lg md:text-xl font-semibold text-green-700">
                     {customer.name}
                   </h4>
@@ -73,22 +75,6 @@ const CustomerReviewCarousel = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-
-        {/* Bottom-centered Navigation */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full flex gap-4 z-20 mt-6">
-          <button
-            className="prev-btn w-10 h-10 bg-green-600 hover:bg-green-700 text-white rounded-full shadow flex items-center justify-center"
-            aria-label="Previous"
-          >
-            &#8592;
-          </button>
-          <button
-            className="next-btn w-10 h-10 bg-green-600 hover:bg-green-700 text-white rounded-full shadow flex items-center justify-center"
-            aria-label="Next"
-          >
-            &#8594;
-          </button>
-        </div>
       </div>
     </section>
   );

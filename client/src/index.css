@@ -16,11 +16,16 @@ html {
 body {
   font-family: "Poppins", sans-serif;
   font-style: normal;
-  @apply bg-blue-50 text-neutral-700;
+  @apply bg-white text-neutral-700;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
+
+body.modal-open {
+  overflow: hidden;
+}
+
 
 /* Hide scrollbar */
 .scrollbar-none::-webkit-scrollbar {

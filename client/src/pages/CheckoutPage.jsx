@@ -17,6 +17,7 @@ const CheckoutPage = () => {
 
   const [qrUrl] = useState(qrImageUrl);
   const [showQR, setShowQR] = useState(false);
+  const [openAddress, setOpenAddress] = useState(false);
 
   const {
     notDiscountTotalPrice,
@@ -26,21 +27,27 @@ const CheckoutPage = () => {
     fetchOrder,
   } = useGlobalContext();
 
-  const [openAddress, setOpenAddress] = useState(false);
   const addressList = useSelector((state) => state.addresses.addressList);
-  const [selectAddress, setSelectAddress] = useState(null);
   const cartItemsList = useSelector((state) => state.cartItem.cart);
+  const [selectAddress, setSelectAddress] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const deliveryType = location.state?.deliveryType || "instant";
+  const deliverySlot = location.state?.deliverySlot || null;
+
+  const slotMessages = {
+    morning: "within the next 50 minutes",
+    evening: "within the next 50 minutes",
+    night: "next morning between 7 AM - 8 AM",
+  };
 
   useEffect(() => {
     if (addressList.length > 0 && !selectAddress) {
       setSelectAddress(addressList[0]._id);
     }
   }, [addressList, selectAddress]);
-
-  const deliveryType = location.state?.deliveryType || "instant";
-  const deliverySlot = location.state?.deliverySlot || null;
 
   const handleCashOnDelivery = async () => {
     if (!selectAddress) {
@@ -55,7 +62,7 @@ const CheckoutPage = () => {
           list_items: cartItemsList,
           addressId: selectAddress,
           subTotalAmt: totalPrice,
-          totalAmt: totalPrice,
+          totalAmt: totalPrice + deliveryCharge + handlingCharge,
           deliveryType,
           deliverySlot,
         },
@@ -93,7 +100,7 @@ const CheckoutPage = () => {
           list_items: cartItemsList,
           addressId: selectAddress,
           subTotalAmt: totalPrice,
-          totalAmt: totalPrice,
+          totalAmt: totalPrice + deliveryCharge + handlingCharge,
           deliveryType,
           deliverySlot,
           payment_status: "Paid via QR",
@@ -113,106 +120,95 @@ const CheckoutPage = () => {
     }
   };
 
-  const slotMessages = {
-    morning: "within the next 50 minutes",
-    evening: "within the next 50 minutes",
-    night: "next morning between 7 AM - 8 AM",
-  };
-
   return (
-    <section className="bg-blue-50">
-      <div className="container mx-auto p-4 flex flex-col lg:flex-row w-full gap-5 justify-between">
-        <div className="w-full">
-          <h3 className="text-lg font-semibold">
+    <section className="bg-blue-50 min-h-screen py-4">
+      <div className="container mx-auto flex flex-col lg:flex-row gap-6 px-4">
+        {/* Address Section */}
+        <div className="w-full lg:w-2/3">
+          <h3 className="text-lg font-semibold mb-2">
             {deliveryType === "schedule"
               ? "Scheduled Checkout"
               : "Instant Checkout"}
           </h3>
-          <div className="bg-white p-2 grid gap-4">
+          <div className="bg-white rounded-lg shadow p-4 ">
             {addressList.map((address, index) => (
               <label
                 htmlFor={`address${index}`}
                 key={address._id}
                 className={!address.status && "hidden"}
               >
-                <div className="border rounded p-3 flex gap-3 hover:bg-blue-50">
-                  <div>
-                    <input
-                      id={`address${index}`}
-                      type="radio"
-                      value={address._id}
-                      name="address"
-                      checked={selectAddress === address._id}
-                      onChange={(e) => setSelectAddress(e.target.value)}
-                    />
-                  </div>
-                  <div>
+                <div className="border-2 m-2 rounded p-3 flex gap-3 hover:bg-blue-50">
+                  <input
+                    id={`address${index}`}
+                    type="radio"
+                    value={address._id}
+                    name="address"
+                    checked={selectAddress === address._id}
+                    onChange={(e) => setSelectAddress(e.target.value)}
+                  />
+                  <div className="text-sm">
                     <p>{address.address_line}</p>
-                    <p>{address.city}</p>
-                    <p>{address.state}</p>
-                    <p>
-                      {address.country} - {address.pincode}
-                    </p>
-                    <p>{address.mobile}</p>
+                    {/* <p>
+                      {address.city}, {address.state}, {address.country} -{" "}
+                      {address.pincode}
+                    </p> */}
+                    <p>📞 {address.mobile}</p>
                   </div>
                 </div>
               </label>
             ))}
-            <div
+            <button
               onClick={() => setOpenAddress(true)}
-              className="h-16 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer"
+              className="mt-4 w-full border-2 border-dashed border-blue-400 py-2 text-blue-600 font-medium text-sm rounded hover:bg-blue-100"
             >
-              Add address
-            </div>
+              + Add New Address
+            </button>
           </div>
         </div>
 
-        <div className="w-full max-w-md bg-white py-4 px-2">
-          <h3 className="text-lg font-semibold">Summary</h3>
-          <BillDetails
-            notDiscountTotalPrice={notDiscountTotalPrice}
-            totalPrice={totalPrice}
-            totalQty={totalQty}
-            handlingCharge={handlingCharge}
-            deliveryCharge={deliveryCharge}
-          />
-
-          <div className="w-full flex flex-col gap-4 mt-4">
-            <button
-              className="py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold"
-              onClick={handleQRPayment}
-            >
-              Scan QR code or Online
-            </button>
-
-            <button
-              className="py-2 px-4 border-2 border-green-600 font-semibold text-green-600 hover:bg-green-600 hover:text-white"
-              onClick={handleCashOnDelivery}
-            >
-              Cash on Delivery
-            </button>
+        {/* Summary Section */}
+        <div className="w-full lg:w-1/3">
+          <div className="bg-white rounded-lg shadow p-4">
+            <h3 className="text-lg font-semibold mb-4">Summary</h3>
+            <BillDetails
+              notDiscountTotalPrice={notDiscountTotalPrice}
+              totalPrice={totalPrice}
+              totalQty={totalQty}
+              handlingCharge={handlingCharge}
+              deliveryCharge={deliveryCharge}
+            />
+            <div className="w-full flex flex-col gap-3 mt-5">
+              <button
+                onClick={handleQRPayment}
+                className="bg-green-600 hover:bg-green-700 text-white py-2 rounded text-sm font-semibold"
+              >
+                Scan QR code / Online
+              </button>
+              <button
+                onClick={handleCashOnDelivery}
+                className="border border-green-600 text-green-700 py-2 rounded text-sm font-semibold hover:bg-green-50"
+              >
+                Cash on Delivery
+              </button>
+            </div>
           </div>
+
+          {deliveryType === "schedule" && deliverySlot && (
+            <p className="text-sm text-gray-500 text-center mt-4">
+              You selected <strong>{deliverySlot}</strong> slot — items will be
+              delivered <strong>{slotMessages[deliverySlot]}</strong>.
+            </p>
+          )}
+          {deliveryType === "instant" && (
+            <p className="text-sm text-gray-500 text-center mt-4">
+              You selected <strong>Instant Delivery</strong> — items will be
+              delivered within <strong>30 minutes</strong>.
+            </p>
+          )}
         </div>
       </div>
 
       {openAddress && <AddAddress close={() => setOpenAddress(false)} />}
-
-      {/* ✅ Delivery Message Display */}
-      {deliveryType === "schedule" && deliverySlot && (
-        <p className="text-sm text-gray-500 text-center mt-2">
-          You selected the <strong>{deliverySlot}</strong> slot — items will be
-          delivered <strong>{slotMessages[deliverySlot]}</strong>.
-        </p>
-      )}
-
-      {deliveryType === "instant" && (
-        <p className="text-sm text-gray-500 text-center mt-2">
-          You selected <strong>Instant Delivery</strong> — items will be
-          delivered within <strong>30 minutes</strong>.
-        </p>
-      )}
-
-      {/* ✅ QR Modal */}
       {showQR && (
         <QRCodeModal
           qrUrl={qrUrl}

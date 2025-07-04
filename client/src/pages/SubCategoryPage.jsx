@@ -25,7 +25,6 @@ const SubCategoryPage = () => {
 
   const columnHelper = createColumnHelper();
 
-  // Fetch sub-categories
   const fetchSubCategories = async () => {
     try {
       setLoading(true);
@@ -45,7 +44,6 @@ const SubCategoryPage = () => {
     fetchSubCategories();
   }, []);
 
-  // Columns for table
   const columns = [
     columnHelper.accessor("name", {
       header: "Name",
@@ -57,7 +55,7 @@ const SubCategoryPage = () => {
           <img
             src={row.original.image}
             alt={row.original.name}
-            className="w-8 h-8 object-contain rounded cursor-pointer"
+            className="w-10 h-10 object-contain rounded cursor-pointer"
             onClick={() => setImagePreviewUrl(row.original.image)}
           />
         </div>
@@ -107,7 +105,6 @@ const SubCategoryPage = () => {
     }),
   ];
 
-  // Delete handler
   const handleDelete = async () => {
     try {
       const response = await Axios({
@@ -127,21 +124,25 @@ const SubCategoryPage = () => {
   };
 
   return (
-    <section className="min-h-screen p-4 bg-gray-50">
+    <section className="min-h-screen px-4 py-6 bg-gray-50">
       {/* Header */}
-      <div className="bg-white p-3 shadow-md rounded flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+      <div className="bg-white p-4 shadow rounded-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <h2 className="text-xl font-semibold text-gray-800">Sub Categories</h2>
         <button
           onClick={() => setOpenAddModal(true)}
           className="text-sm border border-primary-500 text-primary-600 hover:bg-primary-100 px-4 py-1.5 rounded transition"
         >
-          Add Sub Category
+          + Add Sub Category
         </button>
       </div>
 
       {/* Table */}
-      <div className="overflow-auto w-full max-w-full">
-        <DisplayTable data={subCategoryData} column={columns} loading={loading} />
+      <div className="overflow-x-auto w-full">
+        <DisplayTable
+          data={subCategoryData}
+          column={columns}
+          loading={loading}
+        />
       </div>
 
       {/* Modals */}
@@ -151,11 +152,9 @@ const SubCategoryPage = () => {
           fetchData={fetchSubCategories}
         />
       )}
-
       {imagePreviewUrl && (
         <ViewImage url={imagePreviewUrl} close={() => setImagePreviewUrl("")} />
       )}
-
       {openEditModal && (
         <EditSubCategory
           data={editData}
@@ -163,7 +162,6 @@ const SubCategoryPage = () => {
           fetchData={fetchSubCategories}
         />
       )}
-
       {openDeleteConfirm && (
         <ConfirmBox
           close={() => setOpenDeleteConfirm(false)}

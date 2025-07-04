@@ -1,11 +1,26 @@
+import React, { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { HiOutlineExternalLink } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import SummaryApi from "../common/SummaryApi";
+import {
+  HiOutlineExternalLink,
+  HiOutlineLogout,
+  HiOutlineHome,
+  HiOutlineUserGroup,
+  HiOutlineShoppingCart,
+  HiOutlinePlus,
+} from "react-icons/hi";
+import {
+  MdCategory,
+  MdOutlineSubdirectoryArrowRight,
+  MdOutlineInventory,
+  MdOutlineShoppingBag,
+} from "react-icons/md";
+import { FiPackage } from "react-icons/fi";
 import { logout } from "../store/userSlice";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
+import SummaryApi from "../common/SummaryApi";
 import isAdmin from "../utils/isAdmin";
 import Divider from "./Divider";
 
@@ -13,139 +28,148 @@ const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const menuRef = useRef();
 
   const handleLogout = async () => {
     try {
-      const response = await Axios({
-        ...SummaryApi.logout,
-      });
-      console.log("logout", response);
+      const response = await Axios({ ...SummaryApi.logout });
       if (response.data.success) {
-        if (close) {
-          close();
-        }
+        close?.();
         dispatch(logout());
         localStorage.clear();
         toast.success(response.data.message);
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
       AxiosToastError(error);
     }
   };
 
-  const handleClose = () => {
-    if (close) {
-      close();
-    }
-  };
+  const handleClose = () => close?.();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        close?.();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [close]);
+
   return (
-    <div>
-      <div className="font-semibold">My Account</div>
-      <div className="text-sm flex items-center gap-2">
-        <span className="max-w-52 text-ellipsis line-clamp-1">
-          {user.name || user.mobile}{" "}
-          <span className="text-medium text-red-600">
-            {user.role === "ADMIN" ? "(Admin)" : ""}
+    <div
+      ref={menuRef}
+      className="w-full max-w-xs sm:max-w-sm md:max-w-md p-4 bg-white rounded-lg shadow-xl text-sm text-gray-800 space-y-4 relative"
+    >
+      {/* Header */}
+      <div>
+        <div className="font-bold text-base mb-1">My Account</div>
+        <div className="flex items-center justify-between gap-2 text-sm flex-wrap">
+          <span className="truncate max-w-[12rem]">
+            {user.name || user.mobile}{" "}
+            {user.role === "ADMIN" && (
+              <span className="text-green-600 font-semibold">(Admin)</span>
+            )}
           </span>
-        </span>
-        <Link
-          onClick={handleClose}
-          to={"/dashboard/profile"}
-          className="hover:text-primary-200"
-        >
-          <HiOutlineExternalLink size={15} />
-        </Link>
+          <Link
+            onClick={handleClose}
+            to="/dashboard/profile"
+            className="text-green-600 hover:text-green-800"
+            title="Go to Profile"
+          >
+            <HiOutlineExternalLink size={16} />
+          </Link>
+        </div>
       </div>
 
       <Divider />
 
-      <div className="text-sm grid gap-1">
+      {/* Menu Links */}
+      <div className="grid gap-1.5">
         {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/category"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            Category
-          </Link>
+          <>
+            <MenuItem
+              to="/dashboard/category"
+              onClick={handleClose}
+              icon={<MdCategory />}
+            >
+              Category
+            </MenuItem>
+            <MenuItem
+              to="/dashboard/subcategory"
+              onClick={handleClose}
+              icon={<MdOutlineSubdirectoryArrowRight />}
+            >
+              Sub Category
+            </MenuItem>
+            <MenuItem
+              to="/dashboard/admin-users"
+              onClick={handleClose}
+              icon={<HiOutlineUserGroup />}
+            >
+              All Users
+            </MenuItem>
+            <MenuItem
+              to="/dashboard/admin-orders"
+              onClick={handleClose}
+              icon={<FiPackage />}
+            >
+              All Orders
+            </MenuItem>
+            <MenuItem
+              to="/dashboard/upload-product"
+              onClick={handleClose}
+              icon={<HiOutlinePlus />}
+            >
+              Upload Product
+            </MenuItem>
+            <MenuItem
+              to="/dashboard/product"
+              onClick={handleClose}
+              icon={<MdOutlineInventory />}
+            >
+              Product
+            </MenuItem>
+          </>
         )}
 
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/subcategory"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            Sub Category
-          </Link>
-        )}
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/admin-users"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            All Users
-          </Link>
-        )}
-
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/admin-orders"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            All Orders
-          </Link>
-        )}
-
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/upload-product"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            Upload Product
-          </Link>
-        )}
-
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            to={"/dashboard/product"}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            Product
-          </Link>
-        )}
-
-        <Link
+        <MenuItem
+          to="/dashboard/myorders"
           onClick={handleClose}
-          to={"/dashboard/myorders"}
-          className="px-2 hover:bg-orange-200 py-1"
+          icon={<MdOutlineShoppingBag />}
         >
           My Orders
-        </Link>
-
-        <Link
+        </MenuItem>
+        <MenuItem
+          to="/dashboard/address"
           onClick={handleClose}
-          to={"/dashboard/address"}
-          className="px-2 hover:bg-orange-200 py-1"
+          icon={<HiOutlineHome />}
         >
-          Save Address
-        </Link>
+          Saved Address
+        </MenuItem>
 
         <button
           onClick={handleLogout}
-          className="text-left px-2 hover:bg-orange-200 py-1"
+          className="flex items-center gap-2 px-3 py-2 rounded-md font-medium bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition"
         >
+          <HiOutlineLogout />
           Log Out
         </button>
       </div>
     </div>
   );
 };
+
+const MenuItem = ({ to, onClick, icon, children }) => (
+  <Link
+    onClick={onClick}
+    to={to}
+    className="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 hover:bg-green-100 hover:text-green-700 transition font-medium"
+  >
+    {icon}
+    {children}
+  </Link>
+);
 
 export default UserMenu;

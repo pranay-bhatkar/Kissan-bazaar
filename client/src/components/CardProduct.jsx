@@ -12,39 +12,44 @@ const CardProduct = ({ data }) => {
   return (
     <Link
       to={url}
-      className="border-2 py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out "
+      className="border-2 p-2 sm:p-3 lg:p-4 grid gap-2 min-w-[140px] sm:min-w-[160px] md:min-w-[180px] lg:min-w-[200px] rounded bg-white shadow-md hover:shadow-xl transition-all duration-200 ease-in-out"
     >
-      <div className="min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden">
+      {/* Image Container */}
+      <div className="w-full h-[130px] sm:h-[150px] lg:h-[170px] bg-white flex items-center justify-center overflow-hidden rounded">
         <img
           src={data.image[0]}
-          className="w-full h-full object-scale-down lg:scale-125 px-2"
+          alt={data.name}
+          className="max-h-full max-w-full object-contain"
         />
       </div>
-      <div className="items-start gap-1 pt-2">
-        <div>
-          {Boolean(data.discount) && (
-            <p className="text-green-600 bg-green-100 px-2 w-fit text-xs rounded-full text-nowrap font-medium">
-              {data.discount}% discount
-            </p>
-          )}
+
+      {/* Discount badge */}
+      {Boolean(data.discount) && (
+        <div className="pt-1">
+          <p className="text-green-600 bg-green-100 px-2 py-0.5 text-xs rounded-full font-medium w-fit whitespace-nowrap">
+            {data.discount}% discount
+          </p>
         </div>
-      </div>
-      <div className="px-2 lg:px-0 font-medium text-ellipsis text-sm lg:text-base line-clamp-2">
+      )}
+
+      {/* Name */}
+      <div className="px-1 font-medium text-sm sm:text-base line-clamp-2 leading-tight">
         {data.name}
       </div>
-      <div className="w-fit gap-1 px-2 lg:px-0 text-sm lg:text-base font-medium text-gray-500 flex items-center">
+
+      {/* Unit */}
+      <div className="px-1 text-xs sm:text-sm font-medium text-gray-500">
         {data.unit}
       </div>
 
-      <div className="px-2 lg:px-0 flex items-center justify-between gap-1 lg:gap-3 text-sm lg:text-base">
-        <div className="flex items-center gap-1">
-          <div className="font-semibold">
-            {DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}
-          </div>
+      {/* Price and Cart */}
+      <div className="px-1 flex items-center justify-between gap-1 sm:gap-3 text-sm sm:text-base">
+        <div className="font-semibold text-gray-800">
+          {DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}
         </div>
-        <div className="">
-          {data.stock == 0 ? (
-            <p className="text-red-500 text-sm text-center font-mono">
+        <div>
+          {data.stock === 0 ? (
+            <p className="text-red-500 text-xs font-semibold text-center whitespace-nowrap">
               Out of stock
             </p>
           ) : (
