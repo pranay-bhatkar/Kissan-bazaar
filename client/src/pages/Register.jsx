@@ -24,7 +24,6 @@ const Register = () => {
   const [referralCheckLoading, setReferralCheckLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -33,7 +32,6 @@ const Register = () => {
   const isValidValue =
     data.name && data.email && data.password && data.confirmPassword;
 
-  // Validate input fields
   const validateInput = () => {
     if (!/^\S+@\S+\.\S+$/.test(data.email)) {
       toast.error("Invalid email format.");
@@ -50,7 +48,6 @@ const Register = () => {
     return true;
   };
 
-  // Validate referral code (only if entered)
   useEffect(() => {
     const validateReferral = async () => {
       if (!data.referredBy.trim()) {
@@ -79,7 +76,6 @@ const Register = () => {
     validateReferral();
   }, [data.referredBy]);
 
-  // Form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,11 +110,13 @@ const Register = () => {
   };
 
   return (
-    <section className="w-full container mx-auto px-2">
-      <div className="bg-white my-8 w-full max-w-lg mx-auto rounded p-7 shadow-lg border-2">
-        <p className="text-xl font-semibold text-center">Welcome to KissanBazzar</p>
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-white px-4 py-10">
+      <div className="w-full max-w-xl bg-white shadow-xl rounded-lg p-8 sm:p-10 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-green-800 mb-6">
+          Register to KissanBazzar
+        </h2>
 
-        <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <InputField
             label="Name"
             name="name"
@@ -149,7 +147,6 @@ const Register = () => {
             show={showConfirmPassword}
             toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
           />
-
           <InputField
             label="Referral Code (Optional)"
             name="referredBy"
@@ -159,11 +156,11 @@ const Register = () => {
           />
 
           {referralCheckLoading && (
-            <p className="text-xs text-blue-500">Validating referral code...</p>
+            <p className="text-xs text-blue-500">Checking referral code...</p>
           )}
           {!referralValid && data.referredBy && (
             <p className="text-sm text-red-600 font-medium">
-              Invalid referral code
+              Invalid referral code ❌
             </p>
           )}
           {referralValid && data.referredBy && (
@@ -173,22 +170,23 @@ const Register = () => {
           )}
 
           <button
+            type="submit"
             disabled={!isValidValue}
-            className={`${
+            className={`w-full py-2 rounded-lg text-white font-semibold transition ${
               isValidValue
-                ? "bg-green-800 hover:bg-green-700"
-                : "bg-gray-500 cursor-not-allowed"
-            } text-white py-2 rounded font-semibold my-3 tracking-wide`}
+                ? "bg-green-700 hover:bg-green-800"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
             Register
           </button>
         </form>
 
-        <p className="text-sm mt-3">
+        <p className="text-center text-sm mt-6 text-gray-700">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-semibold text-green-700 hover:text-green-800"
+            className="text-green-700 font-semibold hover:underline"
           >
             Login
           </Link>
@@ -198,41 +196,45 @@ const Register = () => {
   );
 };
 
-// Reusable input component
+// Reusable input field
 const InputField = ({ label, name, type, value, onChange }) => (
   <div className="grid gap-1">
-    <label htmlFor={name} className="font-medium">
-      {label}:
+    <label htmlFor={name} className="font-medium text-gray-700">
+      {label}
     </label>
     <input
       type={type}
       id={name}
-      className="bg-gray-100 p-2 border rounded outline-none focus:border-blue-400"
       name={name}
       value={value}
       onChange={onChange}
+      className="w-full px-4 py-2 rounded border bg-gray-50 outline-none focus:ring-1 focus:ring-green-300 focus:border-green-500 transition"
       placeholder={`Enter your ${label.toLowerCase()}`}
     />
   </div>
 );
 
-// Reusable password field component
+// Reusable password field
 const PasswordField = ({ label, name, value, onChange, show, toggleShow }) => (
   <div className="grid gap-1">
-    <label htmlFor={name} className="font-medium">
-      {label}:
+    <label htmlFor={name} className="font-medium text-gray-700">
+      {label}
     </label>
-    <div className="bg-gray-100 p-2 border rounded flex items-center focus-within:border-blue-400">
+    <div className="flex items-center bg-gray-50 border rounded px-4 py-2 focus-within:border-green-500 focus-within:ring-1 focus-within:ring-green-300">
       <input
         type={show ? "text" : "password"}
         id={name}
-        className="w-full outline-none bg-transparent"
         name={name}
         value={value}
         onChange={onChange}
         placeholder={`Enter your ${label.toLowerCase()}`}
+        className="w-full bg-transparent outline-none"
       />
-      <div onClick={toggleShow} className="cursor-pointer ml-2 text-gray-500">
+      <div
+        onClick={toggleShow}
+        className="cursor-pointer text-gray-500 ml-2"
+        title="Toggle visibility"
+      >
         {show ? <FaRegEye /> : <FaRegEyeSlash />}
       </div>
     </div>
