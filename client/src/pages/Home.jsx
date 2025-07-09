@@ -130,7 +130,7 @@ const Home = () => {
                 <img
                   src={banner.desktop}
                   alt={banner.alt || `Banner ${index + 1}`}
-                  className="hidden md:block w-full h-full object-cover"
+                  className="hidden md:block w-full h-full object-fit"
                 />
                 <img
                   src={banner.mobile}
