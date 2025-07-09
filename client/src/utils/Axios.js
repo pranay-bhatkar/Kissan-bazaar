@@ -1,12 +1,11 @@
 import axios from "axios";
-import { baseURL } from "../common/SummaryApi";
 
 const Axios = axios.create({
-    baseURL : baseURL,
-    withCredentials : true
-})
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  withCredentials: true,
+});
 
-// //sending access token in the header
+//sending access token in the header
 // Axios.interceptors.request.use(
 //     async(config)=>{
 //         const accessToken = localStorage.getItem('accesstoken')
@@ -22,14 +21,14 @@ const Axios = axios.create({
 //     }
 // )
 
-// //extend the life span of access token with 
+// //extend the life span of access token with
 // // the help refresh
 // Axios.interceptors.request.use(
 //     (response)=>{
 //         return response
 //     },
 //     async(error)=>{
-//         let originRequest = error.config 
+//         let originRequest = error.config
 
 //         if(error.response.status === 401 && !originRequest.retry){
 //             originRequest.retry = true
@@ -45,11 +44,10 @@ const Axios = axios.create({
 //                 }
 //             }
 //         }
-        
+
 //         return Promise.reject(error)
 //     }
 // )
-
 
 // const refreshAccessToken = async(refreshToken)=>{
 //     try {
@@ -68,4 +66,4 @@ const Axios = axios.create({
 //     }
 // }
 
-export default Axios
+export default Axios;

@@ -58,9 +58,49 @@ const Home = () => {
       mobile: bannerMobile,
       alt: "Banner 2",
     },
+    {
+      desktop: banner,
+      mobile: bannerMobile,
+      alt: "Banner 1",
+    },
+    {
+      desktop: banner,
+      mobile: bannerMobile,
+      alt: "Banner 2",
+    },
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 1",
+    },
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 2",
+    },
   ];
 
   const downBanners = [
+    {
+      desktop: banner,
+      mobile: bannerMobile,
+      alt: "Banner 1",
+    },
+    {
+      desktop: banner,
+      mobile: bannerMobile,
+      alt: "Banner 2",
+    },
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 1",
+    },
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 2",
+    },
     {
       desktop: downBanner,
       mobile: downBannerMobile,
