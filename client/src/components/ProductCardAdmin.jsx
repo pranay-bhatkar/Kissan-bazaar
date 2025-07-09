@@ -34,6 +34,7 @@ const ProductCardAdmin = ({ data, fetchProductData }) => {
       {/* Product Image */}
       <div className="w-full aspect-square mb-2">
         <img
+        loading="lazy"
           src={data?.image?.[0]}
           alt={data?.name || "product-image"}
           className="w-full h-full object-contain"

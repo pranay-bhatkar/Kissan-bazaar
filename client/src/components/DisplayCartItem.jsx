@@ -101,6 +101,7 @@ const DisplayCartItem = ({ close }) => {
                   <div key={item?._id} className="flex w-full gap-4">
                     <div className="w-20 h-20 flex items-center justify-center bg-white border rounded">
                       <img
+                      loading="lazy"
                         src={item?.productId?.image[0]}
                         alt={item?.productId?.name}
                         className="object-scale-down"
@@ -138,6 +139,7 @@ const DisplayCartItem = ({ close }) => {
           ) : (
             <div className="bg-white flex flex-col justify-center items-center p-4 rounded-lg">
               <img
+              loading="lazy"
                 src={imageEmpty}
                 alt="Empty Cart"
                 className="w-full h-full object-scale-down"

@@ -53,6 +53,7 @@ const UserProfileAvatarEdit = ({close}) => {
                 {
                     user.avatar ? (
                         <img 
+                        loading="lazy"
                         alt={user.name}
                         src={user.avatar}
                         className='w-full h-full'

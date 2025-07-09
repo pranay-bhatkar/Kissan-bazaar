@@ -51,6 +51,7 @@ const ProductDisplayPage = () => {
         {/* Main Image */}
         <div className="bg-white border-2  rounded w-full h-64 sm:h-80 md:h-[65vh] flex items-center justify-center">
           <img
+          loading="lazy"
             src={data.image[image]}
             alt="Main"
             className="max-h-full max-w-full object-contain"
@@ -85,6 +86,7 @@ const ProductDisplayPage = () => {
                 onClick={() => setImage(index)}
               >
                 <img
+                loading="lazy"
                   src={img}
                   alt={`thumb-${index}`}
                   className="w-full h-full object-contain"
@@ -201,6 +203,7 @@ const ProductDisplayPage = () => {
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4">
                 <img
+                loading="lazy"
                   src={item.img}
                   alt={item.title}
                   className="w-16 h-16 rounded-lg border shadow"

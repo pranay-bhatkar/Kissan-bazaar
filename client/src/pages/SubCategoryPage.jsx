@@ -53,6 +53,7 @@ const SubCategoryPage = () => {
       cell: ({ row }) => (
         <div className="flex justify-center">
           <img
+            loading="lazy"
             src={row.original.image}
             alt={row.original.name}
             className="w-10 h-10 object-contain rounded cursor-pointer"

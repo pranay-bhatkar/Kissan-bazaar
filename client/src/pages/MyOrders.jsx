@@ -76,6 +76,7 @@ const MyOrders = () => {
               {order.items.map((item, i) => (
                 <div className="flex gap-3 items-center border-b py-2" key={i}>
                   <img
+                  loading="lazy"
                     src={item?.productId?.image?.[0] || "/placeholder.png"}
                     alt={item?.name}
                     className="w-14 h-14 object-cover rounded"

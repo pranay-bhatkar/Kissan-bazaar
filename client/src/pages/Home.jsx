@@ -128,11 +128,13 @@ const Home = () => {
             <SwiperSlide key={index}>
               <div className="w-full aspect-[16/6] md:aspect-[16/4] border-4 border-green-600 rounded-2xl overflow-hidden">
                 <img
+                  loading="lazy"
                   src={banner.desktop}
                   alt={banner.alt || `Banner ${index + 1}`}
                   className="hidden md:block w-full h-full object-fit"
                 />
                 <img
+                  loading="lazy"
                   src={banner.mobile}
                   alt={banner.alt || `Banner ${index + 1}`}
                   className="block md:hidden w-full h-full object-fit"
@@ -166,6 +168,7 @@ const Home = () => {
                 >
                   <div className="w-full max-w-[150px] sm:max-w-[160px] md:max-w-[180px] aspect-square bg-white rounded-xl shadow-md overflow-hidden p-2 border-2 border-green-400">
                     <img
+                    loading="lazy"
                       src={cat.image}
                       alt={cat.name}
                       className="w-full h-full object-contain"
@@ -215,13 +218,16 @@ const Home = () => {
             <SwiperSlide key={index}>
               <div className="w-full aspect-[16/5] md:aspect-[16/4] overflow-hidden">
                 <img
+                
                   src={banner.desktop}
                   alt={banner.alt || `Banner ${index + 1}`}
-                  className="hidden md:block w-full h-full object-fit"
+                  loading="lazy"
+                  className="hidden md:block w-full h-full object-fit "
                 />
                 <img
                   src={banner.mobile}
                   alt={banner.alt || `Banner ${index + 1}`}
+                  loading="lazy"
                   className="block md:hidden w-full h-full object-fit"
                 />
               </div>

@@ -106,6 +106,7 @@ const ProductListPage = () => {
                 }`}
               >
                 <img
+                loading="lazy"
                   src={s.image}
                   alt={s.name}
                   className="w-10 h-10 object-contain"

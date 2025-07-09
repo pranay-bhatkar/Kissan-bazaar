@@ -54,7 +54,7 @@ const Profile = () => {
 
       if (responseData.success) {
         toast.success(responseData.message);
-        
+
         const userData = await fetchUserDetails();
         dispatch(setUserDetails(userData.data));
       }
@@ -69,7 +69,12 @@ const Profile = () => {
       {/**profile upload and display image */}
       <div className="w-20 h-20 bg-red-500 flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm">
         {user.avatar ? (
-          <img alt={user.name} src={user.avatar} className="w-full h-full" />
+          <img
+            loading="lazy"
+            alt={user.name}
+            src={user.avatar}
+            className="w-full h-full"
+          />
         ) : (
           <FaRegUserCircle size={65} />
         )}

@@ -40,7 +40,12 @@ const QRCodeModal = ({ qrUrl, onClose, onSubmitTransaction }) => {
 
         {/* QR Image */}
         <div className="w-full h-60 bg-gray-100 flex items-center justify-center rounded mb-4 overflow-hidden p-2 ">
-          <img src={qrUrl} alt="QR Code" className="h-full object-contain rounded-lg  border-2" />
+          <img
+            src={qrUrl}
+            alt="QR Code"
+            loading="lazy"
+            className="h-full object-contain rounded-lg  border-2"
+          />
         </div>
 
         {/* Input Field */}

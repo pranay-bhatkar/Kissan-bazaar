@@ -45,7 +45,9 @@ const SearchPage = () => {
       const { data: responseData } = response;
 
       if (responseData.success) {
-        setData((prev) => (pageNum === 1 ? responseData.data : [...prev, ...responseData.data]));
+        setData((prev) =>
+          pageNum === 1 ? responseData.data : [...prev, ...responseData.data]
+        );
         setTotalPage(responseData.totalPage);
       }
     } catch (error) {
@@ -84,21 +86,35 @@ const SearchPage = () => {
       <div className="container mx-auto p-4">
         <p className="font-semibold">Search Results: {data.length}</p>
 
-        <InfiniteScroll dataLength={data.length} hasMore={page < totalPage} next={handleFetchMore}>
+        <InfiniteScroll
+          dataLength={data.length}
+          hasMore={page < totalPage}
+          next={handleFetchMore}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-4 gap-5 ">
             {data.map((p, index) => (
               <CardProduct data={p} key={p?._id + "searchProduct" + index} />
             ))}
 
             {/* Loading Skeleton */}
-            {loading && new Array(10).fill(null).map((_, index) => <CardLoading key={"loadingsearchpage" + index} />)}
+            {loading &&
+              new Array(10)
+                .fill(null)
+                .map((_, index) => (
+                  <CardLoading key={"loadingsearchpage" + index} />
+                ))}
           </div>
         </InfiniteScroll>
 
         {/* No Data Found */}
         {!data.length && !loading && (
           <div className="flex flex-col justify-center items-center w-full mx-auto">
-            <img src={noDataImage} className="w-full h-full max-w-xs max-h-xs block" alt="No Data" />
+            <img
+              loading="lazy"
+              src={noDataImage}
+              className="w-full h-full max-w-xs max-h-xs block"
+              alt="No Data"
+            />
             <p className="font-semibold my-2">No Data found</p>
           </div>
         )}

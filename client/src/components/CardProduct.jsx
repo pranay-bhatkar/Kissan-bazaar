@@ -19,6 +19,7 @@ const CardProduct = ({ data }) => {
         <img
           src={data.image[0]}
           alt={data.name}
+          loading="lazy"
           className="max-h-full max-w-full object-contain"
         />
       </div>

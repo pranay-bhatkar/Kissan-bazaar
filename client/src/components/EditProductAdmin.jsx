@@ -210,6 +210,7 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                       onChange={handleUploadImage}
                     />
                   </label>
+
                   {/**display uploded image*/}
                   <div className='flex flex-wrap gap-4'>
                     {
@@ -218,6 +219,7 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                           <div key={img + index} className='h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group'>
                             <img
                               src={img}
+                              loading="lazy"
                               alt={img}
                               className='w-full h-full object-scale-down cursor-pointer'
                               onClick={() => setViewImageURL(img)}

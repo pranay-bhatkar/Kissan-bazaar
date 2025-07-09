@@ -111,6 +111,7 @@ const UploadSubCategoryModel = ({ close, fetchData }) => {
                   <p className="text-sm text-neutral-400">No Image</p>
                 ) : (
                   <img
+                    loading="lazy"
                     alt="subCategory"
                     src={subCategoryData.image}
                     className="w-full h-full object-scale-down"

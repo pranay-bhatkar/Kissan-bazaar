@@ -56,6 +56,7 @@ const WhyShop = () => {
             whileHover={{ scale: 1.03 }}
           >
             <img
+            loading="lazy"
               src={feature.image}
               alt={feature.title}
               className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-full border-2 border-green-500"
@@ -81,6 +82,7 @@ const WhyShop = () => {
             whileHover={{ scale: 1.03 }}
           >
             <img
+            loading="lazy"
               src={feature.image}
               alt={feature.title}
               className="w-16 h-16 object-cover rounded-full border-2 border-green-500"

@@ -40,6 +40,7 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center h-full">
               <img
+              loading="lazy"
                 src={logo}
                 alt="KissanBazzar Logo"
                 className="w-24 sm:w-32 md:w-40 object-contain"

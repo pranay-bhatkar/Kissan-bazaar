@@ -53,10 +53,8 @@ const CustomerReviewCarousel = () => {
             <SwiperSlide key={index}>
               <div className="flex flex-col items-center text-center px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-10 rounded-2xl shadow-md border border-gray-200 bg-gray-50 h-[400px] m-2">
                 <img
-                  src={
-                    customer.image ||
-                    ""
-                  }
+                  loading="lazy"
+                  src={customer.image || ""}
                   alt={customer.name}
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full object-cover mb-4 border-4 border-green-300"
                 />

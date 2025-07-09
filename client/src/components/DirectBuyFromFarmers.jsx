@@ -51,6 +51,7 @@ const DirectBuyFromFarmers = () => {
           >
             <div className="w-full aspect-[4/3] overflow-hidden">
               <img
+                loading="lazy"
                 src={farmer.image}
                 alt={farmer.name}
                 className="w-full h-full object-cover"
