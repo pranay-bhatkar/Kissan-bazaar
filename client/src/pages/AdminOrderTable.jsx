@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Axios from "../utils/Axios";
 import moment from "moment";
-import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Axios from "../utils/Axios";
 
-// Socket connection (you can move to a config file)
-const socket = io("http://localhost:8080"); // Replace with env var in prod
 
 const AdminOrderTable = () => {
   const [orders, setOrders] = useState([]);
@@ -82,7 +79,9 @@ const AdminOrderTable = () => {
                   <td className="border px-3 py-2 capitalize">
                     {order.deliveryType}
                   </td>
-                  <td className="border px-3 py-2">{order.deliverySlot || "-"}</td>
+                  <td className="border px-3 py-2">
+                    {order.deliverySlot || "-"}
+                  </td>
                   <td className="border px-3 py-2">
                     {address
                       ? `${address.address_line}, ${address.city}, ${address.state} - ${address.pincode}`
@@ -95,7 +94,9 @@ const AdminOrderTable = () => {
                   <td className="border px-3 py-2">
                     {moment(order.createdAt).format("DD MMM YYYY, h:mm A")}
                   </td>
-                  <td className="border px-3 py-2">{order.status || "Pending"}</td>
+                  <td className="border px-3 py-2">
+                    {order.status || "Pending"}
+                  </td>
                 </tr>
               );
             })}

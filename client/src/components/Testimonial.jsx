@@ -55,7 +55,7 @@ const CustomerReviewCarousel = () => {
                 <img
                   src={
                     customer.image ||
-                    "https://via.placeholder.com/100?text=User"
+                    ""
                   }
                   alt={customer.name}
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full object-cover mb-4 border-4 border-green-300"

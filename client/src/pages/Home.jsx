@@ -7,7 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import {
   default as banner,
   default as bannerMobile,
-} from "../assets/banner-1.png";
+} from "../assets/banner-1.jpg";
+
+import {
+  default as downBanner,
+  default as downBannerMobile,
+} from "../assets/banner.jpg";
+
 import About from "../components/About";
 import CategoryWiseProductDisplay from "../components/CategoryWiseProductDisplay";
 import DirectBuyFromFarmers from "../components/DirectBuyFromFarmers";
@@ -54,10 +60,23 @@ const Home = () => {
     },
   ];
 
+  const downBanners = [
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 1",
+    },
+    {
+      desktop: downBanner,
+      mobile: downBannerMobile,
+      alt: "Banner 2",
+    },
+  ];
+
   return (
-    <section className="bg-white pt-4 sm:pt-6">
+    <section className="bg-white pt-8 sm:pt-6">
       {/* Banner Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <Swiper
           modules={[Pagination, Autoplay]}
           pagination={{ clickable: true }}
@@ -67,16 +86,16 @@ const Home = () => {
         >
           {banners.map((banner, index) => (
             <SwiperSlide key={index}>
-              <div className="w-full aspect-[6/2] sm:aspect-[5/2] md:aspect-[12/3] overflow-hidden border-4 border-green-600 rounded-2xl">
+              <div className="w-full aspect-[16/6] md:aspect-[16/4] border-4 border-green-600 rounded-2xl overflow-hidden">
                 <img
                   src={banner.desktop}
-                  alt={banner.alt}
-                  className="hidden md:block w-full h-full object-fill rounded-2xl"
+                  alt={banner.alt || `Banner ${index + 1}`}
+                  className="hidden md:block w-full h-full object-cover"
                 />
                 <img
                   src={banner.mobile}
-                  alt={banner.alt}
-                  className="block md:hidden w-full h-full object-fill rounded-2xl"
+                  alt={banner.alt || `Banner ${index + 1}`}
+                  className="block md:hidden w-full h-full object-fit"
                 />
               </div>
             </SwiperSlide>
@@ -143,7 +162,35 @@ const Home = () => {
         <About />
       </div>
 
-      <div className="">
+      {/* Banner Section */}
+      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          loop
+          className="overflow-hidden"
+        >
+          {downBanners.map((banner, index) => (
+            <SwiperSlide key={index}>
+              <div className="w-full aspect-[16/5] md:aspect-[16/4] overflow-hidden">
+                <img
+                  src={banner.desktop}
+                  alt={banner.alt || `Banner ${index + 1}`}
+                  className="hidden md:block w-full h-full object-fit"
+                />
+                <img
+                  src={banner.mobile}
+                  alt={banner.alt || `Banner ${index + 1}`}
+                  className="block md:hidden w-full h-full object-fit"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      <div className="pt-8 px-4 sm:px-6 lg:px-8">
         <Footer />
       </div>
     </section>

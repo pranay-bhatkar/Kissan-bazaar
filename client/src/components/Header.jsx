@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FaRegCircleUser } from "react-icons/fa6";
+import { useState } from "react";
 import { BsCartFill } from "react-icons/bs";
+import { FaRegCircleUser } from "react-icons/fa6";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
+import { useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import useMobile from "../hooks/useMobile";
+import DisplayCartItem from "./DisplayCartItem";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
-import DisplayCartItem from "./DisplayCartItem";
-import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
-import useMobile from "../hooks/useMobile";
-import { useGlobalContext } from "../provider/GlobalProvider";
 
 import logo from "../assets/logo.png";
 
@@ -20,11 +18,11 @@ const Header = () => {
   const isSearchPage = location.pathname === "/search";
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
-  const cartItem = useSelector((state) => state.cartItem.cart);
-  const { totalPrice, totalQty } = useGlobalContext();
 
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [openCartSection, setOpenCartSection] = useState(false);
+
+  const cartItem = useSelector((state) => state.cartItem.cart);
 
   const handleMobileUser = () => {
     if (!user._id) {
@@ -35,8 +33,8 @@ const Header = () => {
   };
 
   return (
-    <>
-      <header className="sticky top-0 z-50 bg-white shadow-md">
+    <div className="bg-white top-20 w-full sticky z-10">
+      <header className="fixed w-full top-0 z-50 bg-white shadow-md ">
         {!isSearchPage && (
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
             {/* Logo */}
@@ -54,7 +52,7 @@ const Header = () => {
             </div>
 
             {/* Right Controls */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-4 sm:gap-3">
               {/* Mobile User Icon */}
               <button
                 className="lg:hidden text-green-600"
@@ -90,7 +88,7 @@ const Header = () => {
                 {/* Dropdown */}
                 {openUserMenu && (
                   <div className="absolute right-0 mt-2 bg-white shadow-lg rounded z-40 min-w-[150px]">
-                    <UserMenu close={() => setOpenUserMenu(false)}  />
+                    <UserMenu close={() => setOpenUserMenu(false)} />
                   </div>
                 )}
               </div>
@@ -98,19 +96,15 @@ const Header = () => {
               {/* Cart Button */}
               <button
                 onClick={() => setOpenCartSection(true)}
-                className="flex items-center gap-2 bg-green-700 hover:bg-green-600 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded text-white"
+                className="relative flex items-center gap-2 bg-green-700 hover:bg-green-600 px-3 py-2 sm:py-2.5 rounded-lg text-white transition-all shadow-sm "
+                aria-label="View Cart"
               >
-                <BsCartFill size={20} />
-                <div className="text-xs sm:text-sm font-semibold text-left leading-tight">
-                  {cartItem.length > 0 ? (
-                    <>
-                      <p>{totalQty} Items</p>
-                      <p>{DisplayPriceInRupees(totalPrice)}</p>
-                    </>
-                  ) : (
-                    <p>My Cart</p>
-                  )}
-                </div>
+                <BsCartFill size={22} />
+                {cartItem.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-green-900 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartItem.length}
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -130,7 +124,7 @@ const Header = () => {
       {openCartSection && (
         <DisplayCartItem close={() => setOpenCartSection(false)} />
       )}
-    </>
+    </div>
   );
 };
 

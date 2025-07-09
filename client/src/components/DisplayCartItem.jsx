@@ -65,8 +65,11 @@ const DisplayCartItem = ({ close }) => {
 
   // Prevent scroll while cart is open
   useEffect(() => {
+    document.body.classList.add("cart-open");
     document.body.classList.add("overflow-hidden");
+
     return () => {
+      document.body.classList.remove("cart-open");
       document.body.classList.remove("overflow-hidden");
     };
   }, []);

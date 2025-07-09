@@ -12,9 +12,6 @@ import AxiosToastError from "../utils/AxiosToastError";
 import qrImageUrl from "../assets/Gpay-QR.jpg";
 
 const CheckoutPage = () => {
-  const handlingCharge = 10;
-  const deliveryCharge = 10;
-
   const [qrUrl] = useState(qrImageUrl);
   const [showQR, setShowQR] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
@@ -36,6 +33,9 @@ const CheckoutPage = () => {
 
   const deliveryType = location.state?.deliveryType || "instant";
   const deliverySlot = location.state?.deliverySlot || null;
+
+  const handlingCharge = 10;
+  const deliveryCharge = deliveryType === "instant" ? 10 : 0;
 
   const slotMessages = {
     morning: "within the next 50 minutes",
